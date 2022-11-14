@@ -112,7 +112,7 @@ CREATE TABLE `funciones` (
   `formato_id` int(11) NOT NULL,
   `hora` datetime NOT NULL,
   `precio` int(11) NOT NULL,
-  `restriccion_id` int(11) NOT NULL,
+  `restriccion_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -204,7 +204,7 @@ DROP TABLE IF EXISTS `salas`;
 CREATE TABLE `salas` (
   `sala_id` int(11) NOT NULL,
   `aire_acondicionado` tinyint(1) DEFAULT NULL,
-  `sala` varchar(20) NOT NULL,
+  `sala` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
