@@ -50,7 +50,7 @@ CREATE TABLE `clientes` (
   `nombre` varchar(30) NOT NULL,
   `apellido` varchar(30) NOT NULL,
   `usuario` varchar(30) NOT NULL,
-  `constrasena` varchar(30) NOT NULL,
+  `contrasena` varchar(30) NOT NULL,
   `privilegios` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
