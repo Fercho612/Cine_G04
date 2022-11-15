@@ -1,0 +1,12 @@
+#ventana_login{
+    position: relative;
+    background-color: #FFFEFE;
+    margin: 1em;
+    padding: 1em;
+    color: black;
+}
+
+
+.btn-group, .btn-group-vertical{
+    width: calc(100% - 2em);
+}
