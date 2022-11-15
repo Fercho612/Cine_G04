@@ -1,5 +1,7 @@
 <?php
 $nombre_usado = 0;
+$usuario_inexistente = 0;
+$contrasena_incorrecta = 0;
 if (isset($_POST["registro"])) {
   $server = "localhost";
   $username = "cine";
@@ -26,7 +28,19 @@ if (isset($_POST["registro"])) {
       $nombre_usado = 1;
   } else {
     // Iniciar Sesión
-    //echo "";
+    $sql = "SELECT usuario, contrasena FROM clientes WHERE usuario = '" . $_POST["username"] . "';";
+    $res = $conn->query($sql);
+    if ($res->num_rows > 0) {
+      if ($res->fetch_assoc()["contrasena"] == $_POST["contrasena"]) {
+        setcookie("username", $_POST["username"]);
+        setcookie("contrasena", $_POST["contrasena"]);
+        header("Location: index.html");
+      } else {
+        $contrasena_incorrecta = 1;
+      }
+    } else {
+      $usuario_inexistente = 1;
+    }
   }
 }
 if (isset($_COOKIE["username"]))
@@ -47,6 +61,12 @@ if (isset($_COOKIE["username"]))
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="login.css">
   <script src="login.js"></script>
+  <?php
+  if (isset($_POST["registro"]) && $_POST["registro"] == 0)
+    echo "<script>var registrando = false;</script>";
+  else
+    echo "<script>var registrando = true;</script>";
+  ?>
 </head>
 
 <body>
@@ -102,6 +122,9 @@ if (isset($_COOKIE["username"]))
         if ($nombre_usado == 1) {
           echo '<div class="alert alert-danger"> <i class="fa-solid fa-triangle-exclamation"> </i> Ese nombre de usuario ya está en uso </div>';
         }
+        if ($usuario_inexistente == 1) {
+          echo '<div class="alert alert-danger"> <i class="fa-solid fa-triangle-exclamation"> </i> No se ha encontrado este nombre de usuario </div>';
+        }
         ?>
       </div>
       <label for="nombre" id="nombre_label" class="form-label registro"> Nombre </label>
@@ -116,7 +139,13 @@ if (isset($_COOKIE["username"]))
       <input type="password" placeholder="Contraseña" name="contrasena" id="contrasena" class="form-control" required
         data-bs-toggle="tooltip" data-bs-title="Debe contener al menos 4 caracteres" data-bs-placement="right">
       <br>
-      <div id="alerta_contrasena" class="alerta"> </div>
+      <div id="alerta_contrasena" class="alerta">
+        <?php
+        if ($contrasena_incorrecta == 1) {
+          echo '<div class="alert alert-danger"> <i class="fa-solid fa-triangle-exclamation"> </i> La contraseña es incorrecta </div>';
+        }
+        ?>
+      </div>
       <label for="contraseña2" id="contrasena2_label" class="form-label registro"> Repetir Contraseña </label>
       <input type="password" placeholder="Contraseña" name="contrasena2" id="contrasena2" class="form-control registro"
         required data-bs-toggle="tooltip" data-bs-title="Las contraseñas deben coincidir" data-bs-placement="right">
