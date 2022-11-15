@@ -6,7 +6,7 @@
       <div class="col-lg-4 mb-4 mb-md-0 text-center">
           <span class="fs-3">Ayuda</span>
           <ul class="mt-3 p-0">
-            <li><a href="#" class="color_wt fs-5">Metodosde pago</a></li>
+            <li><a href="#" class="color_wt fs-5">Metodos de pago</a></li>
             <li><a href="#" class="color_wt fs-5">Recibos</a></li>
             <li><a href="#" class="color_wt fs-5">Asientos</a></li>
           </ul>

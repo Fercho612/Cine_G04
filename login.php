@@ -23,7 +23,7 @@ if (isset($_POST["registro"])) {
       $conn->query($sql);
       setcookie("username", $_POST["username"]);
       setcookie("contrasena", $_POST["contrasena"]);
-      header("Location: index.html");
+      header("Location: index.php");
     } else
       $nombre_usado = 1;
   } else {
@@ -34,7 +34,7 @@ if (isset($_POST["registro"])) {
       if ($res->fetch_assoc()["contrasena"] == $_POST["contrasena"]) {
         setcookie("username", $_POST["username"]);
         setcookie("contrasena", $_POST["contrasena"]);
-        header("Location: index.html");
+        header("Location: index.php");
       } else {
         $contrasena_incorrecta = 1;
       }
@@ -70,36 +70,7 @@ if (isset($_COOKIE["username"]))
 </head>
 
 <body>
-  <header class="w-100">
-    <div class="container">
-      <nav class="navbar navbar-dark navbar-expand-m my-3">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="index.html">
-            <img src="Multimedia/Logos/svg/logo-no-background.svg" alt="Logo" width="150" height="54"
-              class="d-inline-block align-text-top">
-          </a>
-          <button class="navbar-toggler color_primary" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-            aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon color_primary"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 text-center">
-              <li class="nav-item">
-                <a class="nav-link color_primary fs-4" aria-current="page" href="#cartelera">Cartelera</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link color_primary fs-4" href="#">Link</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link color_primary fs-4" href="#footer">Contactos</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </header>
+  <?php include 'Layout/header.php'; ?>
   <main class="w-100 py-5 color-black d-flex justify-content-center">
     <form method="post" action="login.php" id="ventana_login"
       class="container rounded shadow d-flex flex-column col-12 col-sm-10 col-md-6 col-lg-5">
@@ -164,26 +135,7 @@ if (isset($_COOKIE["username"]))
       <input id="hidden_registro" type="hidden" name="registro" value="1">
     </form>
   </main>
-  <footer id="footer" class="w-100 p-3 color_wt">
-    <div class="container row mx-auto">
-      <div class="col-lg-4 mb-4 mb-md-0">
-        <img src="Multimedia/Logos/svg/logo-no-background.svg" alt="Logo" class="d-inline-block align-text-top w-75">
-      </div>
-      <div class="col-lg-4 mb-4 mb-md-0 text-center">
-        <span class="fs-3">Ayuda</span>
-        <ul class="mt-3 p-0">
-          <li><a href="#" class="color_wt fs-5">Metodosde pago</a></li>
-          <li><a href="#" class="color_wt fs-5">Recibos</a></li>
-          <li><a href="#" class="color_wt fs-5">Asientos</a></li>
-        </ul>
-      </div>
-      <div class="col-lg-4">
-        <p class="text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt sunt harum voluptate
-          voluptatibus ipsum nulla nihil quo sapiente, vitae sit facilis dicta architecto, recusandae provident, ad
-          explicabo sint excepturi mollitia.</p>
-      </div>
-    </div>
-  </footer>
+  <?php include 'Layout/footer.php'; ?>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
     crossorigin="anonymous"></script>
