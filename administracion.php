@@ -68,6 +68,48 @@ if (isset($_COOKIE["username"]) && isset($_COOKIE["contrasena"])) {
         </table>
       </section>
       <section>
+        <h4> Restricciones </h4>
+        <form id="form-restricciones" action="abm.php" method="post">
+          <table class="table table-striped">
+            <tr>
+              <th> # </th>
+              <th> Restriccion </th>
+              <th> Acciones </th>
+            </tr>
+            <?php
+        $res = $conn->query("SELECT restriccion_id, restriccion FROM restricciones;");
+        if ($res->num_rows > 0) {
+          while ($row = $res->fetch_assoc()) {
+            echo "<tr>";
+            echo "  <th>" . $row["restriccion_id"] . "</th>";
+            echo "  <td><input id='restriccion-" . $row["restriccion_id"] . "' name='restriccion-" . $row["restriccion_id"] . "' value='" . $row["restriccion"] . "' class='form-control' disabled></td>";
+            echo "  <td>";
+            echo "    <button type='button' id='modificar-restriccion-" . $row["restriccion_id"] . "' onclick='modificarRestriccion(" . $row["restriccion_id"] . ")'";
+            echo "    class='btn btn-primary'> Editar </button>";
+            echo "    <button type='submit' id='guardar-restriccion-" . $row["restriccion_id"] . "' name='seleccion' value='" . $row["restriccion_id"] . "'";
+            echo "    class='btn btn-primary d-none'> Guardar </button>";
+            echo "    <button type='button' id='eliminar-restriccion-" . $row["restriccion_id"] . "' name='seleccion' onclick='eliminarRestriccion(" . $row["restriccion_id"] . ")'";
+            echo "    class='btn btn-danger'> Eliminar </button>";
+            echo "  </td>";
+            echo "</tr>";
+          }
+        }
+            ?>
+          </table>
+          <input id="eliminar-restriccion-id" type="hidden" name="id" value="0">
+          <input id="accion_restriccion" type="hidden" name="accion" value="editar_restriccion">
+        </form>
+        <form action="abm.php" method="post" id="form-nuevo-restriccion">
+          <h5> Nueva restricción </h5>
+          <div class="input-group">
+            <input type="text" name="restriccion" placeholder="Nombre de la restriccion" class="form-control" required>
+            <button type="submit" class="btn btn-primary"> Guardar </button>
+            <input type="hidden" name="accion" value="agregar_restriccion">
+          </div>
+        </form>
+      </section>
+      <br> 
+      <section>
         <h4> Géneros </h4>
         <form id="form-generos" action="abm.php" method="post">
           <table class="table table-striped">
