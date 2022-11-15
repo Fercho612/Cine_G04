@@ -18,6 +18,19 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<style>
+  .card_movie{
+    max-width: 350px;
+    max-height: 404px;
+  }
+  .card_movie_img{
+    border: #0B090A 3px solid;
+    border-radius: 1em;
+  }
+  .card_movie_img:hover{
+  box-shadow: 0px 0px 15px 1px #0B090A;
+  }
+</style>
 <?php include 'Layout/header.php';?>
   <main class="w-100 py-5 color_black">
     <section id="cartelera" class="container py-5">
