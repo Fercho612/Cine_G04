@@ -10,8 +10,16 @@ footer{
 ul{
   list-style: none;
 }
+
+.bg-red{
+  background: #BA181B;
+}
+.bg-black{
+  background: #0B090A;
+}
+
 .color_primary{
-  color: #BA181B
+  color: #BA181B;
 }
 .color_black{
   color: #0B090A;
@@ -19,16 +27,6 @@ ul{
 .color_wt{
   color: #F5F3F4;
 }
-.card_movie{
-  max-width: 350px;
-  max-height: 404px;
-}
 
-.card_movie_img{
-  border: #0B090A 3px solid;
-  border-radius: 1em;
-}
-.card_movie_img:hover{
-  box-shadow: 0px 0px 15px 1px #0B090A;
-}
+
 

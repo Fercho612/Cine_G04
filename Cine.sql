@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-11-2022 a las 14:26:22
+-- Tiempo de generación: 15-11-2022 a las 16:41:06
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -59,7 +59,8 @@ CREATE TABLE `clientes` (
 --
 
 INSERT INTO `clientes` (`cliente_id`, `email`, `nombre`, `apellido`, `usuario`, `contrasena`, `privilegios`) VALUES
-(1, 'admin@gmail.com', 'Administrador', '', 'admin', '0000', 1);
+(1, 'admin@gmail.com', 'Administrador', '', 'admin', '0000', 1),
+(2, 'fabiopana@gmail.com', 'Fabio', 'Panasiuk', 'el_fabionga', 'asdf', 0);
 
 -- --------------------------------------------------------
 
@@ -191,18 +192,7 @@ CREATE TABLE `peliculas` (
   `duracion` varchar(3) COLLATE utf16_spanish_ci NOT NULL,
   `director` varchar(30) COLLATE utf16_spanish_ci NOT NULL,
   `ruta_imagen` varchar(50) COLLATE utf16_spanish_ci DEFAULT NULL,
-  `restriccion_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `pelicula_genero`
---
-
-DROP TABLE IF EXISTS `pelicula_genero`;
-CREATE TABLE `pelicula_genero` (
-  `pelicula_id` int(11) NOT NULL,
+  `restriccion_id` int(11) NOT NULL,
   `genero_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
@@ -322,13 +312,8 @@ ALTER TABLE `metodos_de_pago`
 --
 ALTER TABLE `peliculas`
   ADD PRIMARY KEY (`pelicula_id`),
-  ADD KEY `restriccion_id` (`restriccion_id`);
-
---
--- Indices de la tabla `pelicula_genero`
---
-ALTER TABLE `pelicula_genero`
-  ADD PRIMARY KEY (`pelicula_id`,`genero_id`);
+  ADD KEY `restriccion_id` (`restriccion_id`),
+  ADD KEY `genero_id` (`genero_id`);
 
 --
 -- Indices de la tabla `restricciones`
@@ -364,7 +349,7 @@ ALTER TABLE `asientos`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `cliente_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `cliente_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `entradas`
@@ -406,7 +391,7 @@ ALTER TABLE `metodos_de_pago`
 -- AUTO_INCREMENT de la tabla `peliculas`
 --
 ALTER TABLE `peliculas`
-  MODIFY `pelicula_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `pelicula_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `restricciones`
@@ -458,6 +443,7 @@ ALTER TABLE `funciones`
 -- Filtros para la tabla `peliculas`
 --
 ALTER TABLE `peliculas`
+  ADD CONSTRAINT `genero_id` FOREIGN KEY (`genero_id`) REFERENCES `generos` (`genero_id`),
   ADD CONSTRAINT `restriccion_id` FOREIGN KEY (`restriccion_id`) REFERENCES `restricciones` (`restriccion_id`);
 
 --
