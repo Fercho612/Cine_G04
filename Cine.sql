@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-11-2022 a las 17:10:08
+-- Tiempo de generación: 16-11-2022 a las 17:41:36
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -58,9 +58,8 @@ CREATE TABLE `entradas` (
   `entrada_id` int(11) NOT NULL,
   `cliente_id` int(11) NOT NULL,
   `metodo_pago_id` int(11) NOT NULL,
-  `fila` varchar(3) COLLATE utf16_spanish_ci NOT NULL,
-  `columna` varchar(3) COLLATE utf16_spanish_ci NOT NULL,
-  `funcion_id` int(11) NOT NULL
+  `funcion_id` int(11) NOT NULL,
+  `codigo_asiento` varchar(6) COLLATE utf16_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
 -- --------------------------------------------------------
@@ -218,14 +217,6 @@ CREATE TABLE `salas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
 --
--- Volcado de datos para la tabla `salas`
---
-
-INSERT INTO `salas` (`sala_id`, `aire_acondicionado`, `sala`) VALUES
-(2, NULL, 'Sala 3D'),
-(3, NULL, 'Sala 1');
-
---
 -- Índices para tablas volcadas
 --
 
@@ -349,7 +340,7 @@ ALTER TABLE `metodos_de_pago`
 -- AUTO_INCREMENT de la tabla `peliculas`
 --
 ALTER TABLE `peliculas`
-  MODIFY `pelicula_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `pelicula_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `restricciones`
@@ -361,7 +352,7 @@ ALTER TABLE `restricciones`
 -- AUTO_INCREMENT de la tabla `salas`
 --
 ALTER TABLE `salas`
-  MODIFY `sala_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `sala_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Restricciones para tablas volcadas
