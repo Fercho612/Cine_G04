@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-11-2022 a las 16:34:42
+-- Tiempo de generación: 16-11-2022 a las 17:10:08
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -59,7 +59,8 @@ CREATE TABLE `entradas` (
   `cliente_id` int(11) NOT NULL,
   `metodo_pago_id` int(11) NOT NULL,
   `fila` varchar(3) COLLATE utf16_spanish_ci NOT NULL,
-  `columna` varchar(3) COLLATE utf16_spanish_ci NOT NULL
+  `columna` varchar(3) COLLATE utf16_spanish_ci NOT NULL,
+  `funcion_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
 -- --------------------------------------------------------
@@ -92,9 +93,9 @@ INSERT INTO `formatos` (`formato_id`, `formato`) VALUES
 DROP TABLE IF EXISTS `funciones`;
 CREATE TABLE `funciones` (
   `funcion_id` int(11) NOT NULL,
-  `sala_id` int(11) NOT NULL,
+  `sala_id` int(11) DEFAULT NULL,
   `pelicula_id` int(11) DEFAULT NULL,
-  `idioma_id` int(11) NOT NULL,
+  `idioma_id` int(11) DEFAULT NULL,
   `formato_id` int(11) NOT NULL,
   `hora` datetime NOT NULL,
   `precio` int(11) NOT NULL
@@ -217,6 +218,14 @@ CREATE TABLE `salas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
 --
+-- Volcado de datos para la tabla `salas`
+--
+
+INSERT INTO `salas` (`sala_id`, `aire_acondicionado`, `sala`) VALUES
+(2, NULL, 'Sala 3D'),
+(3, NULL, 'Sala 1');
+
+--
 -- Índices para tablas volcadas
 --
 
@@ -233,7 +242,8 @@ ALTER TABLE `clientes`
 ALTER TABLE `entradas`
   ADD PRIMARY KEY (`entrada_id`),
   ADD KEY `cliente_id` (`cliente_id`),
-  ADD KEY `metodo_pago_id` (`metodo_pago_id`);
+  ADD KEY `metodo_pago_id` (`metodo_pago_id`),
+  ADD KEY `entradas_ibfk_3` (`funcion_id`);
 
 --
 -- Indices de la tabla `formatos`
@@ -339,7 +349,7 @@ ALTER TABLE `metodos_de_pago`
 -- AUTO_INCREMENT de la tabla `peliculas`
 --
 ALTER TABLE `peliculas`
-  MODIFY `pelicula_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `pelicula_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `restricciones`
@@ -351,7 +361,7 @@ ALTER TABLE `restricciones`
 -- AUTO_INCREMENT de la tabla `salas`
 --
 ALTER TABLE `salas`
-  MODIFY `sala_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `sala_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restricciones para tablas volcadas
@@ -362,16 +372,17 @@ ALTER TABLE `salas`
 --
 ALTER TABLE `entradas`
   ADD CONSTRAINT `entradas_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`cliente_id`),
-  ADD CONSTRAINT `entradas_ibfk_2` FOREIGN KEY (`metodo_pago_id`) REFERENCES `metodos_de_pago` (`metodo_pago_id`);
+  ADD CONSTRAINT `entradas_ibfk_2` FOREIGN KEY (`metodo_pago_id`) REFERENCES `metodos_de_pago` (`metodo_pago_id`),
+  ADD CONSTRAINT `entradas_ibfk_3` FOREIGN KEY (`funcion_id`) REFERENCES `funciones` (`funcion_id`) ON DELETE NO ACTION;
 
 --
 -- Filtros para la tabla `funciones`
 --
 ALTER TABLE `funciones`
-  ADD CONSTRAINT `funciones_ibfk_1` FOREIGN KEY (`sala_id`) REFERENCES `salas` (`sala_id`),
-  ADD CONSTRAINT `funciones_ibfk_2` FOREIGN KEY (`pelicula_id`) REFERENCES `peliculas` (`pelicula_id`),
-  ADD CONSTRAINT `funciones_ibfk_3` FOREIGN KEY (`idioma_id`) REFERENCES `idiomas` (`idioma_id`),
-  ADD CONSTRAINT `funciones_ibfk_4` FOREIGN KEY (`formato_id`) REFERENCES `formatos` (`formato_id`);
+  ADD CONSTRAINT `funciones_ibfk_1` FOREIGN KEY (`sala_id`) REFERENCES `salas` (`sala_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `funciones_ibfk_2` FOREIGN KEY (`pelicula_id`) REFERENCES `peliculas` (`pelicula_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `funciones_ibfk_3` FOREIGN KEY (`idioma_id`) REFERENCES `idiomas` (`idioma_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `funciones_ibfk_4` FOREIGN KEY (`formato_id`) REFERENCES `formatos` (`formato_id`) ON DELETE NO ACTION;
 
 --
 -- Filtros para la tabla `peliculas`
