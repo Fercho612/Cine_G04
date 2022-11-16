@@ -1,5 +1,23 @@
 <?php
 $conn = new mysqli("localhost", "root", "", "cine") or die("not connected" . mysqli_connect_error());
+
+// ABM de formatos
+if (isset($_POST["accion"]) && $_POST["accion"] == "editar_formato") {
+  $nombre = $_POST["formato-" . $_POST["seleccion"]];
+  $sql = "UPDATE formatos SET formato = '" . $nombre . "' WHERE formato_id = " . $_POST["seleccion"];
+  $conn->query($sql);
+}
+if (isset($_POST["accion"]) && $_POST["accion"] == "eliminar_formato") {
+  $sql = "UPDATE peliculas SET formato_id = NULL WHERE formato_id = " . $_POST["id"];
+  $conn->query($sql);
+  $sql = "DELETE FROM formatos WHERE formato_id = " . $_POST["id"];
+  $conn->query($sql);
+}
+if (isset($_POST["accion"]) && $_POST["accion"] == "agregar_formato") {
+  $sql = "INSERT INTO formatos (formato) VALUES ('" . $_POST["formato"] . "')";
+  $conn->query($sql);
+}
+
 // ABM de géneros
 if (isset($_POST["accion"]) && $_POST["accion"] == "editar_genero") {
   $nombre = $_POST["genero-" . $_POST["seleccion"]];
@@ -42,7 +60,6 @@ if (isset($_POST["accion"]) && $_POST["accion"] == "editar_sala") {
 }
 if (isset($_POST["accion"]) && $_POST["accion"] == "eliminar_sala") {
   $sql = "UPDATE funciones SET sala_id = NULL WHERE sala_id = " . $_POST["id"];
-  echo "Se eliminaron " . $res->num_rows;
   $conn->query($sql);
   $sql = "DELETE FROM salas WHERE sala_id = " . $_POST["id"];
   $conn->query($sql);
@@ -56,34 +73,35 @@ if (isset($_POST["accion"]) && $_POST["accion"] == "agregar_sala") {
 if (isset($_POST["accion"]) && $_POST["accion"] == "editar_pelicula") {
   $sql = "UPDATE peliculas 
   SET nombre = '" . $_POST["titulo"] . "', 
-  duracion = '".$_POST["duracion"]."',
-  director = '".$_POST["director"]."',
-  restriccion_id = ".$_POST["restriccion"].",
-  genero_id = ".$_POST["genero"]."
+  duracion = '" . $_POST["duracion"] . "',
+  director = '" . $_POST["director"] . "',
+  restriccion_id = " . $_POST["restriccion"] . ",
+  genero_id = " . $_POST["genero"] . "
   WHERE pelicula_id = " . $_POST["id"];
   $conn->query($sql);
 }
-/*
+
 if (isset($_POST["accion"]) && $_POST["accion"] == "eliminar_pelicula") {
-  $sql = "DELETE peliculas SET restriccion_id = NULL WHERE restriccion_id = " . $_POST["id"];
-  $conn->query($sql);
-  $sql = "DELETE FROM restricciones WHERE restriccion_id = " . $_POST["id"];
+  $sql = "DELETE FROM peliculas WHERE pelicula_id = " . $_POST["id"];
   $conn->query($sql);
 }
-*/
+
 if (isset($_POST["accion"]) && $_POST["accion"] == "agregar_pelicula") {
   $sql = "INSERT INTO peliculas (nombre, duracion, director, restriccion_id, genero_id) 
   VALUES ('" . $_POST["titulo"] . "', '" . $_POST["duracion"] . "', '" . $_POST["director"] . "', '" . $_POST["restriccion"] . "', '" . $_POST["genero"] . "')";
   $conn->query($sql);
   $target_dir = "fotos_peliculas/" . $conn->insert_id . ".jpg";
   move_uploaded_file($_FILES["imagen"]["tmp_name"], $target_dir);
-} 
+}
 
 // ABM de funciones
-if(isset($_POST["accion"]) && $_POST["accion"] == "agregar_funcion"){
+if (isset($_POST["accion"]) && $_POST["accion"] == "agregar_funcion") {
   $sql = "INSERT INTO funciones (sala_id, pelicula_id, idioma_id, formato_id, hora, precio)
-  VALUES (".$_POST["sala"].", ".$_POST["pelicula"].", ".$_POST["idioma"].", ".$_POST["formato"].", '".$_POST["hora"]."', ".$_POST["precio"].");";
+  VALUES (" . $_POST["sala"] . ", " . $_POST["pelicula"] . ", " . $_POST["idioma"] . ", " . $_POST["formato"] . ", '" . $_POST["hora"] . "', " . $_POST["precio"] . ");";
   $conn->query($sql);
+}
+if (isset($_POST["accion"]) && $_POST["accion"] == "eliminar_funcion") {
+  $conn->query("DELETE FROM funciones WHERE funcion_id = " . $_POST["funcion_id"]);
 }
 
 header("Location: administracion.php");

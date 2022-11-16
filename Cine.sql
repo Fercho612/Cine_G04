@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-11-2022 a las 17:41:36
+-- Tiempo de generación: 16-11-2022 a las 19:43:40
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -45,7 +45,8 @@ CREATE TABLE `clientes` (
 --
 
 INSERT INTO `clientes` (`cliente_id`, `email`, `nombre`, `apellido`, `usuario`, `contrasena`, `privilegios`) VALUES
-(1, 'admin@gmail.com', 'Administrador', '', 'admin', '0000', 1);
+(1, 'admin@gmail.com', 'Administrador', '', 'admin', '0000', 1),
+(3, 'fabiopana@gmail.com', 'A lalala', 'afefsf', 'fabian', 'asdf', 0);
 
 -- --------------------------------------------------------
 
@@ -56,9 +57,9 @@ INSERT INTO `clientes` (`cliente_id`, `email`, `nombre`, `apellido`, `usuario`, 
 DROP TABLE IF EXISTS `entradas`;
 CREATE TABLE `entradas` (
   `entrada_id` int(11) NOT NULL,
-  `cliente_id` int(11) NOT NULL,
-  `metodo_pago_id` int(11) NOT NULL,
-  `funcion_id` int(11) NOT NULL,
+  `cliente_id` int(11) DEFAULT NULL,
+  `metodo_pago_id` int(11) DEFAULT NULL,
+  `funcion_id` int(11) DEFAULT NULL,
   `codigo_asiento` varchar(6) COLLATE utf16_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
@@ -80,7 +81,7 @@ CREATE TABLE `formatos` (
 
 INSERT INTO `formatos` (`formato_id`, `formato`) VALUES
 (1, '3D'),
-(2, '2D'),
+(2, '2DDDDD'),
 (3, '4DX');
 
 -- --------------------------------------------------------
@@ -95,9 +96,10 @@ CREATE TABLE `funciones` (
   `sala_id` int(11) DEFAULT NULL,
   `pelicula_id` int(11) DEFAULT NULL,
   `idioma_id` int(11) DEFAULT NULL,
-  `formato_id` int(11) NOT NULL,
+  `formato_id` int(11) DEFAULT NULL,
   `hora` datetime NOT NULL,
-  `precio` int(11) NOT NULL
+  `precio` int(11) NOT NULL,
+  `disponible` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
 -- --------------------------------------------------------
@@ -234,7 +236,7 @@ ALTER TABLE `entradas`
   ADD PRIMARY KEY (`entrada_id`),
   ADD KEY `cliente_id` (`cliente_id`),
   ADD KEY `metodo_pago_id` (`metodo_pago_id`),
-  ADD KEY `entradas_ibfk_3` (`funcion_id`);
+  ADD KEY `entradas_ibfk_2` (`funcion_id`);
 
 --
 -- Indices de la tabla `formatos`
@@ -298,7 +300,7 @@ ALTER TABLE `salas`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `cliente_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `cliente_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `entradas`
@@ -362,9 +364,9 @@ ALTER TABLE `salas`
 -- Filtros para la tabla `entradas`
 --
 ALTER TABLE `entradas`
-  ADD CONSTRAINT `entradas_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`cliente_id`),
-  ADD CONSTRAINT `entradas_ibfk_2` FOREIGN KEY (`metodo_pago_id`) REFERENCES `metodos_de_pago` (`metodo_pago_id`),
-  ADD CONSTRAINT `entradas_ibfk_3` FOREIGN KEY (`funcion_id`) REFERENCES `funciones` (`funcion_id`) ON DELETE NO ACTION;
+  ADD CONSTRAINT `entradas_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`cliente_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `entradas_ibfk_2` FOREIGN KEY (`funcion_id`) REFERENCES `funciones` (`funcion_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `entradas_ibfk_3` FOREIGN KEY (`metodo_pago_id`) REFERENCES `metodos_de_pago` (`metodo_pago_id`) ON DELETE SET NULL;
 
 --
 -- Filtros para la tabla `funciones`
@@ -373,7 +375,7 @@ ALTER TABLE `funciones`
   ADD CONSTRAINT `funciones_ibfk_1` FOREIGN KEY (`sala_id`) REFERENCES `salas` (`sala_id`) ON DELETE SET NULL,
   ADD CONSTRAINT `funciones_ibfk_2` FOREIGN KEY (`pelicula_id`) REFERENCES `peliculas` (`pelicula_id`) ON DELETE SET NULL,
   ADD CONSTRAINT `funciones_ibfk_3` FOREIGN KEY (`idioma_id`) REFERENCES `idiomas` (`idioma_id`) ON DELETE SET NULL,
-  ADD CONSTRAINT `funciones_ibfk_4` FOREIGN KEY (`formato_id`) REFERENCES `formatos` (`formato_id`) ON DELETE NO ACTION;
+  ADD CONSTRAINT `funciones_ibfk_4` FOREIGN KEY (`formato_id`) REFERENCES `formatos` (`formato_id`) ON DELETE SET NULL;
 
 --
 -- Filtros para la tabla `peliculas`

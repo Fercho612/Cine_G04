@@ -13,6 +13,21 @@ function eliminarGenero(id) {
   }
 }
 
+// Formato
+function modificarFormato(id) {
+  $(`#formato-${id}`).prop("disabled", false);
+  $(`#modificar-formato-${id}`).addClass("d-none");
+  $(`#guardar-formato-${id}`).removeClass("d-none");
+}
+
+function eliminarFormato(id) {
+  if (confirm(`¿Desea eliminar este género? Se eliminará de todas las películas que lo tengan`)) {
+    $("#accion_formato").val("eliminar_formato");
+    $("#eliminar-formato-id").val(id);
+    $("#form-formatos").submit();
+  }
+}
+
 // Restricciones
 function modificarRestriccion(id) {
   $(`#restriccion-${id}`).prop("disabled", false);
@@ -34,7 +49,7 @@ function eliminarPelicula() {
     $("#accion_pelicula").val("eliminar_pelicula");
     $("#form-pelicula").submit();
   }
-}
+
 
 // Salas
 function modificarSala(id) {
@@ -48,5 +63,13 @@ function eliminarSala(id) {
     $("#accion_sala").val("eliminar_sala");
     $("#eliminar-sala-id").val(id);
     $("#form-salas").submit();
+  }
+}
+
+// Funciones
+function eliminarFuncion(id){
+  if(confirm(`¿Desea eliminar esta funcion? Al hacerlo se perderá información de las entradas relacionadas`)){
+    $("#accion_funciones").val("eliminar_funcion");
+    $("#funcion_id").val(id);
   }
 }

@@ -33,7 +33,7 @@ if (isset($_COOKIE["username"]) && isset($_COOKIE["contrasena"])) {
     <div id="ventana_admin" class="container rounded shadow d-flex flex-column col-11 col-md-10">
 
       <?php if (!isset($_GET["pelicula"])) { ?>
-      <section>
+      <section id="section-peliculas">
         <h4> Peliculas </h4>
         <table class="table table-striped rounded">
           <tr>
@@ -59,8 +59,8 @@ if (isset($_COOKIE["username"]) && isset($_COOKIE["contrasena"])) {
             echo "  <td>" . $row["director"] . "</td>";
             echo "  <td>" . $row["duracion"] . "</td>";
             echo "  <td><img src='" . $row["ruta_imagen"] . "'></td>";
-            echo "  <td>" . $row["restriccion"] . "</td>";
             echo "  <td>" . $row["genero"] . "</td>";
+            echo "  <td>" . $row["restriccion"] . "</td>";
             echo "</tr>";
           }
         }
@@ -71,7 +71,7 @@ if (isset($_COOKIE["username"]) && isset($_COOKIE["contrasena"])) {
         <br>
       </section>
       <br>
-      <section>
+      <section id="section-salas">
         <h4> Salas </h4>
         <form id="form-salas" action="abm.php" method="post">
           <table class="table table-striped">
@@ -113,7 +113,7 @@ if (isset($_COOKIE["username"]) && isset($_COOKIE["contrasena"])) {
         </form>
       </section>
       <br>
-      <section>
+      <section id="section-restricciones">
         <h4> Restricciones </h4>
         <form id="form-restricciones" action="abm.php" method="post">
           <table class="table table-striped">
@@ -148,14 +148,15 @@ if (isset($_COOKIE["username"]) && isset($_COOKIE["contrasena"])) {
         <form action="abm.php" method="post" id="form-nuevo-restriccion">
           <h5> Nueva restricción </h5>
           <div class="input-group">
-            <input type="text" name="restriccion" placeholder="Nombre de la restriccion" class="form-control" required>
+            <input type="text" name="restriccion" placeholder="Descripción de la restriccion" class="form-control"
+              required>
             <button type="submit" class="btn btn-primary"> Guardar </button>
             <input type="hidden" name="accion" value="agregar_restriccion">
           </div>
         </form>
       </section>
       <br>
-      <section>
+      <section id="section-generos">
         <h4> Géneros </h4>
         <form id="form-generos" action="abm.php" method="post">
           <table class="table table-striped">
@@ -196,9 +197,55 @@ if (isset($_COOKIE["username"]) && isset($_COOKIE["contrasena"])) {
           </div>
         </form>
       </section>
+      <br>
+      <section id="section-formatos">
+        <h4> Formatos </h4>
+        <form id="form-formatos" action="abm.php" method="post">
+          <table class="table table-striped">
+            <tr>
+              <th> # </th>
+              <th> Formato </th>
+              <th> Acciones </th>
+            </tr>
+            <?php
+        $res = $conn->query("SELECT formato_id, formato FROM formatos;");
+        if ($res->num_rows > 0) {
+          while ($row = $res->fetch_assoc()) {
+            echo "<tr>";
+            echo "  <th>" . $row["formato_id"] . "</th>";
+            echo "  <td><input id='formato-" . $row["formato_id"] . "' name='formato-" . $row["formato_id"] . "' value='" . $row["formato"] . "' class='form-control' disabled></td>";
+            echo "  <td>";
+            echo "    <button type='button' id='modificar-formato-" . $row["formato_id"] . "' onclick='modificarFormato(" . $row["formato_id"] . ")'";
+            echo "    class='btn btn-primary'> Editar </button>";
+            echo "    <button type='submit' id='guardar-formato-" . $row["formato_id"] . "' name='seleccion' value='" . $row["formato_id"] . "'";
+            echo "    class='btn btn-primary d-none'> Guardar </button>";
+            echo "    <button type='button' id='eliminar-formato-" . $row["formato_id"] . "' name='seleccion' onclick='eliminarFormato(" . $row["formato_id"] . ")'";
+            echo "    class='btn btn-danger'> Eliminar </button>";
+            echo "  </td>";
+            echo "</tr>";
+          }
+        }
+            ?>
+          </table>
+          <input id="eliminar-formato-id" type="hidden" name="id" value="0">
+          <input id="accion_formato" type="hidden" name="accion" value="editar_formato">
+        </form>
+        <form action="abm.php" method="post" id="form-nuevo-formato">
+          <h5> Nuevo Formato </h5>
+          <div class="input-group">
+            <input type="text" name="formato" placeholder="Descripción del formato" class="form-control" required>
+            <button type="submit" class="btn btn-primary"> Guardar </button>
+            <input type="hidden" name="accion" value="agregar_formato">
+          </div>
+        </form>
+      </section>
       <?php } else { ?>
-      <!-- Agregar Película-->
-      <section>
+
+
+      <!-- Pestaña de película -->
+
+
+      <section id="section-peliculas">
         <?php
         if ($_GET["pelicula"] == 0) {
           echo "<h4> Agregar Pelicula </h4>";
@@ -276,7 +323,7 @@ if (isset($_COOKIE["username"]) && isset($_COOKIE["contrasena"])) {
         </form>
       </section>
       <?php if ($_GET["pelicula"] > 0) { ?>
-      <section>
+      <section id="section-funciones">
         <h4> Funciones </h4>
         <table class="table table-striped">
           <tr>
@@ -364,8 +411,9 @@ WHERE pelicula_id = " . $_GET["pelicula"];
               </td>
             </tr>
           </table>
-          <input type="hidden" name="accion" value="agregar_funcion">
-          <input type="hidden" name="pelicula" value="<?php echo $_GET["pelicula"];?>">
+          <input id="accion_funciones" type="hidden" name="accion" value="agregar_funcion">
+          <input type="hidden" name="pelicula" value="<?php echo $_GET["pelicula"]; ?>">
+          <input type="hidden" name="funcion_id" value="0" id="funcion_id">
           <button type="submit" class="btn btn-primary"> Guardar </button>
         </form>
       </section>
