@@ -70,6 +70,49 @@ if (isset($_COOKIE["username"]) && isset($_COOKIE["contrasena"])) {
         <a href="administracion.php?pelicula=0" class="btn btn-primary"> Agregar Película </a>
         <br>
       </section>
+      <br>
+      <section>
+        <h4> Salas </h4>
+        <form id="form-salas" action="abm.php" method="post">
+          <table class="table table-striped">
+            <tr>
+              <th> # </th>
+              <th> Sala </th>
+              <th> Acciones </th>
+            </tr>
+            <?php
+        $res = $conn->query("SELECT sala_id, sala FROM salas;");
+        if ($res->num_rows > 0) {
+          while ($row = $res->fetch_assoc()) {
+            echo "<tr>";
+            echo "  <th>" . $row["sala_id"] . "</th>";
+            echo "  <td><input id='sala-" . $row["sala_id"] . "' name='sala-" . $row["sala_id"] . "' value='" . $row["sala"] . "' class='form-control' disabled></td>";
+            echo "  <td>";
+            echo "    <button type='button' id='modificar-sala-" . $row["sala_id"] . "' onclick='modificarSala(" . $row["sala_id"] . ")'";
+            echo "    class='btn btn-primary'> Editar </button>";
+            echo "    <button type='submit' id='guardar-sala-" . $row["sala_id"] . "' name='seleccion' value='" . $row["sala_id"] . "'";
+            echo "    class='btn btn-primary d-none'> Guardar </button>";
+            echo "    <button type='button' id='eliminar-sala-" . $row["sala_id"] . "' name='seleccion' onclick='eliminarSala(" . $row["sala_id"] . ")'";
+            echo "    class='btn btn-danger'> Eliminar </button>";
+            echo "  </td>";
+            echo "</tr>";
+          }
+        }
+            ?>
+          </table>
+          <input id="eliminar-sala-id" type="hidden" name="id" value="0">
+          <input id="accion_sala" type="hidden" name="accion" value="editar_sala">
+        </form>
+        <form action="abm.php" method="post" id="form-nuevo-restriccion">
+          <h5> Nueva sala </h5>
+          <div class="input-group">
+            <input type="text" name="sala" placeholder="Nombre de la sala" class="form-control" required>
+            <button type="submit" class="btn btn-primary"> Guardar </button>
+            <input type="hidden" name="accion" value="agregar_sala">
+          </div>
+        </form>
+      </section>
+      <br>
       <section>
         <h4> Restricciones </h4>
         <form id="form-restricciones" action="abm.php" method="post">
@@ -232,6 +275,101 @@ if (isset($_COOKIE["username"]) && isset($_COOKIE["contrasena"])) {
           <?php } ?>
         </form>
       </section>
+      <?php if ($_GET["pelicula"] > 0) { ?>
+      <section>
+        <h4> Funciones </h4>
+        <table class="table table-striped">
+          <tr>
+            <th> # </th>
+            <th> Sala </th>
+            <th> Idioma </th>
+            <th> Formato </th>
+            <th> Hora </th>
+            <th> Precio </th>
+          </tr>
+          <?php
+          $sql = "SELECT funcion_id, sala, idioma, formato, hora, precio
+FROM funciones
+LEFT JOIN salas USING (sala_id)
+LEFT JOIN idiomas USING (idioma_id)
+LEFT JOIN formatos USING (formato_id)
+WHERE pelicula_id = " . $_GET["pelicula"];
+          $res = $conn->query($sql);
+          if ($res->num_rows > 0) {
+            while ($row = $res->fetch_assoc()) {
+              echo "<tr>";
+              echo "  <th>" . $row["funcion_id"] . "</th>";
+              echo "  <td>" . $row["sala"] . "</td>";
+              echo "  <td>" . $row["idioma"] . "</td>";
+              echo "  <td>" . $row["formato"] . "</td>";
+              echo "  <td>" . $row["hora"] . "</td>";
+              echo "  <td>" . $row["precio"] . "</td>";
+              echo "</tr>";
+            }
+          }
+          ?>
+        </table>
+        <h5>Agregar función</h5>
+        <form method="post" action="abm.php">
+          <table class="table table-striped">
+            <tr>
+              <th> Sala </th>
+              <th> Idioma </th>
+              <th> Formato </th>
+              <th> Hora </th>
+              <th> Precio </th>
+            </tr>
+            <tr>
+              <td>
+                <select name="sala" class="form-select">
+                  <?php
+          $res = $conn->query("SELECT sala, sala_id FROM salas");
+          if ($res->num_rows > 0) {
+            while ($row = $res->fetch_assoc()) {
+              echo "<option value='" . $row["sala_id"] . "'>" . $row["sala"] . "</option>";
+            }
+          }
+                  ?>
+                </select>
+              </td>
+              <td>
+                <select name="idioma" class="form-select">
+                  <?php
+          $res = $conn->query("SELECT idioma, idioma_id FROM idiomas");
+          if ($res->num_rows > 0) {
+            while ($row = $res->fetch_assoc()) {
+              echo "<option value='" . $row["idioma_id"] . "'>" . $row["idioma"] . "</option>";
+            }
+          }
+                  ?>
+                </select>
+              </td>
+              <td>
+                <select name="formato" class="form-select">
+                  <?php
+          $res = $conn->query("SELECT formato, formato_id FROM formatos");
+          if ($res->num_rows > 0) {
+            while ($row = $res->fetch_assoc()) {
+              echo "<option value='" . $row["formato_id"] . "'>" . $row["formato"] . "</option>";
+            }
+          }
+                  ?>
+                </select>
+              </td>
+              <td>
+                <input type="datetime-local" class="form-control" name="hora" required>
+              </td>
+              <td>
+                <input type="number" min="1" class="form-control" name="precio" value="100" required>
+              </td>
+            </tr>
+          </table>
+          <input type="hidden" name="accion" value="agregar_funcion">
+          <input type="hidden" name="pelicula" value="<?php echo $_GET["pelicula"];?>">
+          <button type="submit" class="btn btn-primary"> Guardar </button>
+        </form>
+      </section>
+      <?php } ?>
       <?php } ?>
     </div>
   </main>

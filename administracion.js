@@ -1,3 +1,4 @@
+// Género
 function modificarGenero(id) {
   $(`#genero-${id}`).prop("disabled", false);
   $(`#modificar-genero-${id}`).addClass("d-none");
@@ -12,6 +13,7 @@ function eliminarGenero(id) {
   }
 }
 
+// Restricciones
 function modificarRestriccion(id) {
   $(`#restriccion-${id}`).prop("disabled", false);
   $(`#modificar-restriccion-${id}`).addClass("d-none");
@@ -26,9 +28,25 @@ function eliminarRestriccion(id) {
   }
 }
 
+// Películas
 function eliminarPelicula() {
   if (confirm(`¿Desea eliminar esta pelicula? Se eliminarán todas las funciones asociadas`)) {
     $("#accion_pelicula").val("eliminar_pelicula");
     $("#form-pelicula").submit();
+  }
+}
+
+// Salas
+function modificarSala(id) {
+  $(`#sala-${id}`).prop("disabled", false);
+  $(`#modificar-sala-${id}`).addClass("d-none");
+  $(`#guardar-sala-${id}`).removeClass("d-none");
+}
+
+function eliminarSala(id) {
+  if (confirm(`¿Desea eliminar esta sala? Se eliminarán todas las funciones que la contengan y sus entradas`)) {
+    $("#accion_sala").val("eliminar_sala");
+    $("#eliminar-sala-id").val(id);
+    $("#form-salas").submit();
   }
 }

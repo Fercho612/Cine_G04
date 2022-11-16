@@ -34,6 +34,24 @@ if (isset($_POST["accion"]) && $_POST["accion"] == "agregar_restriccion") {
   $conn->query($sql);
 }
 
+// ABM de salas
+if (isset($_POST["accion"]) && $_POST["accion"] == "editar_sala") {
+  $nombre = $_POST["sala-" . $_POST["seleccion"]];
+  $sql = "UPDATE salas SET sala = '" . $nombre . "' WHERE sala_id = " . $_POST["seleccion"];
+  $conn->query($sql);
+}
+if (isset($_POST["accion"]) && $_POST["accion"] == "eliminar_sala") {
+  $sql = "UPDATE funciones SET sala_id = NULL WHERE sala_id = " . $_POST["id"];
+  echo "Se eliminaron " . $res->num_rows;
+  $conn->query($sql);
+  $sql = "DELETE FROM salas WHERE sala_id = " . $_POST["id"];
+  $conn->query($sql);
+}
+if (isset($_POST["accion"]) && $_POST["accion"] == "agregar_sala") {
+  $sql = "INSERT INTO salas (sala) VALUES ('" . $_POST["sala"] . "')";
+  $conn->query($sql);
+}
+
 // ABM de películas
 if (isset($_POST["accion"]) && $_POST["accion"] == "editar_pelicula") {
   $sql = "UPDATE peliculas 
@@ -60,6 +78,13 @@ if (isset($_POST["accion"]) && $_POST["accion"] == "agregar_pelicula") {
   $target_dir = "fotos_peliculas/" . $conn->insert_id . ".jpg";
   move_uploaded_file($_FILES["imagen"]["tmp_name"], $target_dir);
 } 
+
+// ABM de funciones
+if(isset($_POST["accion"]) && $_POST["accion"] == "agregar_funcion"){
+  $sql = "INSERT INTO funciones (sala_id, pelicula_id, idioma_id, formato_id, hora, precio)
+  VALUES (".$_POST["sala"].", ".$_POST["pelicula"].", ".$_POST["idioma"].", ".$_POST["formato"].", '".$_POST["hora"]."', ".$_POST["precio"].");";
+  $conn->query($sql);
+}
 
 header("Location: administracion.php");
 ?>
