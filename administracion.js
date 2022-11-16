@@ -49,7 +49,7 @@ function eliminarPelicula() {
     $("#accion_pelicula").val("eliminar_pelicula");
     $("#form-pelicula").submit();
   }
-
+}
 
 // Salas
 function modificarSala(id) {
@@ -71,5 +71,6 @@ function eliminarFuncion(id){
   if(confirm(`¿Desea eliminar esta funcion? Al hacerlo se perderá información de las entradas relacionadas`)){
     $("#accion_funciones").val("eliminar_funcion");
     $("#funcion_id").val(id);
+    $("#form-funciones").submit();
   }
 }

@@ -276,7 +276,7 @@ if (isset($_COOKIE["username"]) && isset($_COOKIE["contrasena"])) {
         if ($res->num_rows > 0) {
           while ($row = $res->fetch_assoc()) {
             echo "<option value='" . $row["restriccion_id"];
-            if (isset($info_pelicula))
+            if (isset($info_pelicula) && $info_pelicula["restriccion_id"] == $row["restriccion_id"])
               echo "' selected>";
             else
               echo "'>";
@@ -295,7 +295,7 @@ if (isset($_COOKIE["username"]) && isset($_COOKIE["contrasena"])) {
         if ($res->num_rows > 0) {
           while ($row = $res->fetch_assoc()) {
             echo "<option value='" . $row["genero_id"];
-            if (isset($info_pelicula))
+            if (isset($info_pelicula) && $info_pelicula["genero_id"] == $row["genero_id"])
               echo "' selected>";
             else
               echo "'>";
@@ -333,6 +333,7 @@ if (isset($_COOKIE["username"]) && isset($_COOKIE["contrasena"])) {
             <th> Formato </th>
             <th> Hora </th>
             <th> Precio </th>
+            <th> </th>
           </tr>
           <?php
           $sql = "SELECT funcion_id, sala, idioma, formato, hora, precio
@@ -351,13 +352,14 @@ WHERE pelicula_id = " . $_GET["pelicula"];
               echo "  <td>" . $row["formato"] . "</td>";
               echo "  <td>" . $row["hora"] . "</td>";
               echo "  <td>" . $row["precio"] . "</td>";
+              echo "  <td><button class='btn btn-danger' onclick='eliminarFuncion(". $row["funcion_id"]. ")' type='button'> Eliminar </button>";
               echo "</tr>";
             }
           }
-          ?>
+          ?>          
         </table>
         <h5>Agregar función</h5>
-        <form method="post" action="abm.php">
+        <form id="form-funciones" method="post" action="abm.php">
           <table class="table table-striped">
             <tr>
               <th> Sala </th>
@@ -365,6 +367,7 @@ WHERE pelicula_id = " . $_GET["pelicula"];
               <th> Formato </th>
               <th> Hora </th>
               <th> Precio </th>
+              <th> </th>
             </tr>
             <tr>
               <td>

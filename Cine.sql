@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-11-2022 a las 19:43:40
+-- Tiempo de generación: 16-11-2022 a las 20:49:53
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -81,8 +81,7 @@ CREATE TABLE `formatos` (
 
 INSERT INTO `formatos` (`formato_id`, `formato`) VALUES
 (1, '3D'),
-(2, '2DDDDD'),
-(3, '4DX');
+(4, '5D');
 
 -- --------------------------------------------------------
 
@@ -102,6 +101,18 @@ CREATE TABLE `funciones` (
   `disponible` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
+--
+-- Volcado de datos para la tabla `funciones`
+--
+
+INSERT INTO `funciones` (`funcion_id`, `sala_id`, `pelicula_id`, `idioma_id`, `formato_id`, `hora`, `precio`, `disponible`) VALUES
+(1, 1, NULL, 2, 1, '2022-12-24 18:55:00', 100, 1),
+(4, 1, NULL, 1, 1, '2022-12-09 19:19:00', 100, 1),
+(5, 1, 2, 1, 1, '2022-12-01 19:27:00', 100, 1),
+(6, 1, 4, 1, 1, '2022-11-25 19:48:00', 100, 1),
+(7, 1, 4, 1, 1, '2022-11-29 19:48:00', 100, 1),
+(8, 1, 4, 1, 1, '2022-11-20 19:48:00', 100, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -120,9 +131,8 @@ CREATE TABLE `generos` (
 
 INSERT INTO `generos` (`genero_id`, `genero`) VALUES
 (1, 'Terror'),
-(2, 'Comedia'),
 (3, 'Accion'),
-(4, 'Romance');
+(5, 'Tragedia');
 
 -- --------------------------------------------------------
 
@@ -183,6 +193,14 @@ CREATE TABLE `peliculas` (
   `genero_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
+--
+-- Volcado de datos para la tabla `peliculas`
+--
+
+INSERT INTO `peliculas` (`pelicula_id`, `nombre`, `duracion`, `director`, `ruta_imagen`, `restriccion_id`, `genero_id`) VALUES
+(2, 'Otra peli ', '12', 'Bizarrap', NULL, 3, NULL),
+(4, 'Peliculón', '123', 'Bizarrap', NULL, 2, 3);
+
 -- --------------------------------------------------------
 
 --
@@ -217,6 +235,14 @@ CREATE TABLE `salas` (
   `aire_acondicionado` tinyint(1) DEFAULT NULL,
   `sala` varchar(20) COLLATE utf16_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `salas`
+--
+
+INSERT INTO `salas` (`sala_id`, `aire_acondicionado`, `sala`) VALUES
+(1, NULL, 'Sala 3D'),
+(2, NULL, 'Sala 1');
 
 --
 -- Índices para tablas volcadas
@@ -312,19 +338,19 @@ ALTER TABLE `entradas`
 -- AUTO_INCREMENT de la tabla `formatos`
 --
 ALTER TABLE `formatos`
-  MODIFY `formato_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `formato_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `funciones`
 --
 ALTER TABLE `funciones`
-  MODIFY `funcion_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `funcion_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `generos`
 --
 ALTER TABLE `generos`
-  MODIFY `genero_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `genero_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `idiomas`
@@ -342,7 +368,7 @@ ALTER TABLE `metodos_de_pago`
 -- AUTO_INCREMENT de la tabla `peliculas`
 --
 ALTER TABLE `peliculas`
-  MODIFY `pelicula_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `pelicula_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `restricciones`
@@ -354,7 +380,7 @@ ALTER TABLE `restricciones`
 -- AUTO_INCREMENT de la tabla `salas`
 --
 ALTER TABLE `salas`
-  MODIFY `sala_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `sala_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas
