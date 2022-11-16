@@ -1,7 +1,11 @@
 <?php
 $conn = new mysqli("localhost", "root", "", "cine") or die("not connected" . mysqli_connect_error());
-if(isset($_POST["pelicula"])) $pelicula = $_POST["pelicula"];
+if (isset($_POST["pelicula"]))
+  $pelicula = $_POST["pelicula"];
 $section = "#";
+if (isset($_COOKIE["username"])) {
+  $cliente_id = $conn->query("SELECT cliente_id FROM clientes WHERE usuario = '" . $_COOKIE["username"] . "';")->fetch_assoc()["cliente_id"];
+}
 
 // ABM de formatos
 if (isset($_POST["accion"]) && $_POST["accion"] == "editar_formato") {
@@ -37,6 +41,24 @@ if (isset($_POST["accion"]) && $_POST["accion"] == "agregar_genero") {
   $sql = "INSERT INTO generos (genero) VALUES ('" . $_POST["genero"] . "')";
   $conn->query($sql);
   $section = "#section-generos";
+}
+
+// ABM de idiomas
+if (isset($_POST["accion"]) && $_POST["accion"] == "editar_idioma") {
+  $nombre = $_POST["idioma-" . $_POST["seleccion"]];
+  $sql = "UPDATE idiomas SET idioma = '" . $nombre . "' WHERE idioma_id = " . $_POST["seleccion"];
+  $section = "#section-idiomas";
+  $conn->query($sql);
+}
+if (isset($_POST["accion"]) && $_POST["accion"] == "eliminar_idioma") {
+  $sql = "DELETE FROM idiomas WHERE idioma_id = " . $_POST["id"];
+  $section = "#section-idiomas";
+  $conn->query($sql);
+}
+if (isset($_POST["accion"]) && $_POST["accion"] == "agregar_idioma") {
+  $sql = "INSERT INTO idiomas (idioma) VALUES ('" . $_POST["idioma"] . "')";
+  $conn->query($sql);
+  $section = "#section-idiomas";
 }
 
 // ABM de restricciones
@@ -85,6 +107,10 @@ if (isset($_POST["accion"]) && $_POST["accion"] == "editar_pelicula") {
   genero_id = " . $_POST["genero"] . "
   WHERE pelicula_id = " . $_POST["id"];
   $conn->query($sql);
+  $target_dir = "fotos_peliculas\\" . $_POST["id"] . ".jpg";
+  if (isset($_FILES["imagen"])) {
+    move_uploaded_file($_FILES["imagen"]["tmp_name"], $target_dir);
+  }
   $pelicula = $_POST["id"];
   $section = "#section-peliculas";
 }
@@ -100,6 +126,7 @@ if (isset($_POST["accion"]) && $_POST["accion"] == "agregar_pelicula") {
   VALUES ('" . $_POST["titulo"] . "', '" . $_POST["duracion"] . "', '" . $_POST["director"] . "', '" . $_POST["restriccion"] . "', '" . $_POST["genero"] . "')";
   $conn->query($sql);
   $target_dir = "fotos_peliculas\\" . $conn->insert_id . ".jpg";
+  //die($target_dir);
   move_uploaded_file($_FILES["imagen"]["tmp_name"], $target_dir);
   $pelicula = $conn->insert_id;
   $section = "#section-peliculas";
@@ -117,38 +144,40 @@ if (isset($_POST["accion"]) && $_POST["accion"] == "eliminar_funcion") {
   $section = "#section-funciones";
 }
 if (isset($_POST["accion"]) && $_POST["accion"] == "toggle_funcion") {
-  if(isset($_POST["activar"]) && $_POST["activar"] == 1) $activar = 1;
-  else $activar = 0;
+  if (isset($_POST["activar"]) && $_POST["activar"] == 1)
+    $activar = 1;
+  else
+    $activar = 0;
   //die("Valor de funcion_id:" . $_POST["funcion_id"]);
-  $conn->query("UPDATE funciones SET disponible = ". $activar ." WHERE funcion_id = " . $_POST["funcion_id"]);
+  $conn->query("UPDATE funciones SET disponible = " . $activar . " WHERE funcion_id = " . $_POST["funcion_id"]);
   $section = "#section-funciones";
 }
 
+// ABM de entradas
+if (isset($_POST['buy_ticket'])) {
+  /*
+  $idioma = $_POST['entradas_idioma'];
+  $formato = $_POST['entradas_formato'];
+  $horario = $_POST['entradas_horario'];
+  */
+  $metodo = $_POST['entradas_mpago'];
+  $asientos = $_POST['entradas_asientos'];
+  $funcion_id = $_POST["funcion_id"];
+  $arrAsientos = (explode(",", $asientos));
+
+  //$query_funciones = "SELECT funcion_id FROM funciones inner join idiomas USING(idioma_id) inner join formatos USING(formato_id)  WHERE idioma = '$idioma' and formato = '$formato' and HOUR(`hora`)='$horario'";
+  //$get_funcion_id = $conn->query($query_funciones);
+
+  for ($i = 0; $i < count($arrAsientos); $i++) {
+    $sql = "INSERT INTO entradas (cliente_id, metodo_pago_id, funcion_id, codigo_asiento) 
+    VALUES(" . $cliente_id . ", " . $metodo . ", " . $funcion_id . ", '" . $arrAsientos[$i] ."');";
+    $conn->query($sql);
+  }
+}
 
 if (isset($pelicula)) {
   header("Location: administracion.php?pelicula=" . $pelicula . $section);
 } else {
   header("Location: administracion.php" . $section);
 }
-
-// ABM de entradas
-if(isset($_POST['buy_ticket'])){
-  $idioma = $_POST['entradas_idioma'];
-  $formato = $_POST['entradas_formato'];
-  $horario = $_POST['entradas_horario'];
-  $asientos = $_POST['entradas_asientos'];
-  $metodo = $_POST['entradas_mpago'];
-
-  $arrAsientos = (explode(",",$asientos));
-
-  $query_funciones = "SELECT funcion_id FROM funciones inner join idiomas USING(idioma_id) inner join formatos USING(formato_id)  WHERE idioma = '$idioma' and formato = '$formato' and HOUR(`hora`)='$horario'";
-  $get_funcion_id = mysqli_query($conn,$query_entradas);
-
-  for ($i=0;$i<count($arrAsientos);$i++){
-    $sql = "INSERT INTO entradas (client_id, metodo_pago_id, funcion_id, codigo_asiento) 
-    VALUES(40," .$metodo. "," .$arrAsientos[$i].",".$get_funcion_id.");";
-    $conn->query($sql);
-  }
-}   
 ?>
-

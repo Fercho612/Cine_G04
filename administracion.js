@@ -28,6 +28,21 @@ function eliminarFormato(id) {
   }
 }
 
+// Idioma
+function modificarIdioma(id) {
+  $(`#idioma-${id}`).prop("disabled", false);
+  $(`#modificar-idioma-${id}`).addClass("d-none");
+  $(`#guardar-idioma-${id}`).removeClass("d-none");
+}
+
+function eliminarIdioma(id) {
+  if (confirm(`¿Desea eliminar este género? Se eliminará de todas las películas que lo tengan`)) {
+    $("#accion_idioma").val("eliminar_idioma");
+    $("#eliminar-idioma-id").val(id);
+    $("#form-idiomas").submit();
+  }
+}
+
 // Restricciones
 function modificarRestriccion(id) {
   $(`#restriccion-${id}`).prop("disabled", false);

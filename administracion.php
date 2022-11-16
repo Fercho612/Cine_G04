@@ -155,7 +155,7 @@ if (isset($_COOKIE["username"]) && isset($_COOKIE["contrasena"])) {
           </div>
         </form>
       </section>
-      <br>
+      <br><br>
       <section id="section-generos">
         <h4> Géneros </h4>
         <form id="form-generos" action="abm.php" method="post">
@@ -194,6 +194,48 @@ if (isset($_COOKIE["username"]) && isset($_COOKIE["contrasena"])) {
             <input type="text" name="genero" placeholder="Nombre del género" class="form-control" required>
             <button type="submit" class="btn btn-primary"> Guardar </button>
             <input type="hidden" name="accion" value="agregar_genero">
+          </div>
+        </form>
+      </section>
+      
+      <section id="section-generos">
+        <h4> Idiomas </h4>
+        <form id="form-idiomas" action="abm.php" method="post">
+          <table class="table table-striped">
+            <tr>
+              <th> # </th>
+              <th> Género </th>
+              <th> Acciones </th>
+            </tr>
+            <?php
+        $res = $conn->query("SELECT idioma_id, idioma FROM idiomas;");
+        if ($res->num_rows > 0) {
+          while ($row = $res->fetch_assoc()) {
+            echo "<tr>";
+            echo "  <th>" . $row["idioma_id"] . "</th>";
+            echo "  <td><input id='idioma-" . $row["idioma_id"] . "' name='idioma-" . $row["idioma_id"] . "' value='" . $row["idioma"] . "' class='form-control' disabled></td>";
+            echo "  <td>";
+            echo "    <button type='button' id='modificar-idioma-" . $row["idioma_id"] . "' onclick='modificarIdioma(" . $row["idioma_id"] . ")'";
+            echo "    class='btn btn-primary'> Editar </button>";
+            echo "    <button type='submit' id='guardar-idioma-" . $row["idioma_id"] . "' name='seleccion' value='" . $row["idioma_id"] . "'";
+            echo "    class='btn btn-primary d-none'> Guardar </button>";
+            echo "    <button type='button' id='eliminar-idioma-" . $row["idioma_id"] . "' name='seleccion' onclick='eliminarIdioma(" . $row["idioma_id"] . ")'";
+            echo "    class='btn btn-danger'> Eliminar </button>";
+            echo "  </td>";
+            echo "</tr>";
+          }
+        }
+            ?>
+          </table>
+          <input id="eliminar-idioma-id" type="hidden" name="id" value="0">
+          <input id="accion_idioma" type="hidden" name="accion" value="editar_idioma">
+        </form>
+        <form action="abm.php" method="post" id="form-nuevo-idioma">
+          <h5> Nuevo Idioma </h5>
+          <div class="input-group">
+            <input type="text" name="idioma" placeholder="Nombre del género" class="form-control" required>
+            <button type="submit" class="btn btn-primary"> Guardar </button>
+            <input type="hidden" name="accion" value="agregar_idioma">
           </div>
         </form>
       </section>
