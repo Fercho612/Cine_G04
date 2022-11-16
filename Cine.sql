@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-11-2022 a las 16:41:06
+-- Tiempo de generación: 16-11-2022 a las 01:57:11
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -28,19 +28,29 @@ USE `cine`;
 --
 -- Estructura de tabla para la tabla `asientos`
 --
+-- Creación: 16-11-2022 a las 00:40:54
+--
 
 DROP TABLE IF EXISTS `asientos`;
 CREATE TABLE `asientos` (
   `asiento_id` int(11) NOT NULL,
   `fila` varchar(3) COLLATE utf16_spanish_ci NOT NULL,
   `columna` varchar(3) COLLATE utf16_spanish_ci NOT NULL,
-  `sala_id` int(11) NOT NULL
+  `funcion_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+--
+-- RELACIONES PARA LA TABLA `asientos`:
+--   `funcion_id`
+--       `funciones` -> `funcion_id`
+--
 
 -- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `clientes`
+--
+-- Creación: 16-11-2022 a las 00:39:33
 --
 
 DROP TABLE IF EXISTS `clientes`;
@@ -55,32 +65,48 @@ CREATE TABLE `clientes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
 --
+-- RELACIONES PARA LA TABLA `clientes`:
+--
+
+--
 -- Volcado de datos para la tabla `clientes`
 --
 
 INSERT INTO `clientes` (`cliente_id`, `email`, `nombre`, `apellido`, `usuario`, `contrasena`, `privilegios`) VALUES
-(1, 'admin@gmail.com', 'Administrador', '', 'admin', '0000', 1),
-(2, 'fabiopana@gmail.com', 'Fabio', 'Panasiuk', 'el_fabionga', 'asdf', 0);
+(1, 'admin@gmail.com', 'Administrador', '', 'admin', '0000', 1);
 
 -- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `entradas`
 --
+-- Creación: 16-11-2022 a las 00:54:43
+--
 
 DROP TABLE IF EXISTS `entradas`;
 CREATE TABLE `entradas` (
   `entrada_id` int(11) NOT NULL,
   `cliente_id` int(11) NOT NULL,
-  `funcion_id` int(11) NOT NULL,
   `asiento_id` int(11) NOT NULL,
   `metodo_pago_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+--
+-- RELACIONES PARA LA TABLA `entradas`:
+--   `cliente_id`
+--       `clientes` -> `cliente_id`
+--   `asiento_id`
+--       `asientos` -> `asiento_id`
+--   `metodo_pago_id`
+--       `metodos_de_pago` -> `metodo_pago_id`
+--
 
 -- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `formatos`
+--
+-- Creación: 16-11-2022 a las 00:39:33
 --
 
 DROP TABLE IF EXISTS `formatos`;
@@ -88,6 +114,10 @@ CREATE TABLE `formatos` (
   `formato_id` int(11) NOT NULL,
   `formato` varchar(20) COLLATE utf16_spanish_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+--
+-- RELACIONES PARA LA TABLA `formatos`:
+--
 
 --
 -- Volcado de datos para la tabla `formatos`
@@ -103,6 +133,8 @@ INSERT INTO `formatos` (`formato_id`, `formato`) VALUES
 --
 -- Estructura de tabla para la tabla `funciones`
 --
+-- Creación: 16-11-2022 a las 00:39:33
+--
 
 DROP TABLE IF EXISTS `funciones`;
 CREATE TABLE `funciones` (
@@ -115,10 +147,24 @@ CREATE TABLE `funciones` (
   `precio` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
+--
+-- RELACIONES PARA LA TABLA `funciones`:
+--   `sala_id`
+--       `salas` -> `sala_id`
+--   `pelicula_id`
+--       `peliculas` -> `pelicula_id`
+--   `idioma_id`
+--       `idiomas` -> `idioma_id`
+--   `formato_id`
+--       `formatos` -> `formato_id`
+--
+
 -- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `generos`
+--
+-- Creación: 16-11-2022 a las 00:39:33
 --
 
 DROP TABLE IF EXISTS `generos`;
@@ -126,6 +172,10 @@ CREATE TABLE `generos` (
   `genero_id` int(11) NOT NULL,
   `genero` varchar(30) COLLATE utf16_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+--
+-- RELACIONES PARA LA TABLA `generos`:
+--
 
 --
 -- Volcado de datos para la tabla `generos`
@@ -142,12 +192,18 @@ INSERT INTO `generos` (`genero_id`, `genero`) VALUES
 --
 -- Estructura de tabla para la tabla `idiomas`
 --
+-- Creación: 16-11-2022 a las 00:39:33
+--
 
 DROP TABLE IF EXISTS `idiomas`;
 CREATE TABLE `idiomas` (
   `idioma_id` int(11) NOT NULL,
   `idioma` varchar(30) COLLATE utf16_spanish_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+--
+-- RELACIONES PARA LA TABLA `idiomas`:
+--
 
 --
 -- Volcado de datos para la tabla `idiomas`
@@ -163,12 +219,18 @@ INSERT INTO `idiomas` (`idioma_id`, `idioma`) VALUES
 --
 -- Estructura de tabla para la tabla `metodos_de_pago`
 --
+-- Creación: 16-11-2022 a las 00:39:33
+--
 
 DROP TABLE IF EXISTS `metodos_de_pago`;
 CREATE TABLE `metodos_de_pago` (
   `metodo_pago_id` int(11) NOT NULL,
   `metodo_pago` varchar(20) COLLATE utf16_spanish_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+--
+-- RELACIONES PARA LA TABLA `metodos_de_pago`:
+--
 
 --
 -- Volcado de datos para la tabla `metodos_de_pago`
@@ -184,6 +246,8 @@ INSERT INTO `metodos_de_pago` (`metodo_pago_id`, `metodo_pago`) VALUES
 --
 -- Estructura de tabla para la tabla `peliculas`
 --
+-- Creación: 16-11-2022 a las 00:39:33
+--
 
 DROP TABLE IF EXISTS `peliculas`;
 CREATE TABLE `peliculas` (
@@ -192,14 +256,24 @@ CREATE TABLE `peliculas` (
   `duracion` varchar(3) COLLATE utf16_spanish_ci NOT NULL,
   `director` varchar(30) COLLATE utf16_spanish_ci NOT NULL,
   `ruta_imagen` varchar(50) COLLATE utf16_spanish_ci DEFAULT NULL,
-  `restriccion_id` int(11) NOT NULL,
-  `genero_id` int(11) NOT NULL
+  `restriccion_id` int(11) DEFAULT NULL,
+  `genero_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+--
+-- RELACIONES PARA LA TABLA `peliculas`:
+--   `genero_id`
+--       `generos` -> `genero_id`
+--   `restriccion_id`
+--       `restricciones` -> `restriccion_id`
+--
 
 -- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `restricciones`
+--
+-- Creación: 16-11-2022 a las 00:39:33
 --
 
 DROP TABLE IF EXISTS `restricciones`;
@@ -207,6 +281,10 @@ CREATE TABLE `restricciones` (
   `restriccion_id` int(11) NOT NULL,
   `restriccion` varchar(5) COLLATE utf16_spanish_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
+
+--
+-- RELACIONES PARA LA TABLA `restricciones`:
+--
 
 --
 -- Volcado de datos para la tabla `restricciones`
@@ -223,6 +301,8 @@ INSERT INTO `restricciones` (`restriccion_id`, `restriccion`) VALUES
 --
 -- Estructura de tabla para la tabla `salas`
 --
+-- Creación: 16-11-2022 a las 00:39:33
+--
 
 DROP TABLE IF EXISTS `salas`;
 CREATE TABLE `salas` (
@@ -231,19 +311,9 @@ CREATE TABLE `salas` (
   `sala` varchar(20) COLLATE utf16_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
--- --------------------------------------------------------
-
 --
--- Estructura de tabla para la tabla `ventas`
+-- RELACIONES PARA LA TABLA `salas`:
 --
-
-DROP TABLE IF EXISTS `ventas`;
-CREATE TABLE `ventas` (
-  `venta_id` int(11) NOT NULL,
-  `cliente_id` int(11) DEFAULT NULL,
-  `horario` time DEFAULT NULL,
-  `funcion_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_spanish_ci;
 
 --
 -- Índices para tablas volcadas
@@ -254,7 +324,7 @@ CREATE TABLE `ventas` (
 --
 ALTER TABLE `asientos`
   ADD PRIMARY KEY (`asiento_id`),
-  ADD KEY `sala_id` (`sala_id`);
+  ADD KEY `sala_id` (`funcion_id`);
 
 --
 -- Indices de la tabla `clientes`
@@ -269,7 +339,6 @@ ALTER TABLE `clientes`
 ALTER TABLE `entradas`
   ADD PRIMARY KEY (`entrada_id`),
   ADD KEY `cliente_id` (`cliente_id`),
-  ADD KEY `funcion_id` (`funcion_id`),
   ADD KEY `asiento_id` (`asiento_id`),
   ADD KEY `metodo_pago_id` (`metodo_pago_id`);
 
@@ -312,8 +381,8 @@ ALTER TABLE `metodos_de_pago`
 --
 ALTER TABLE `peliculas`
   ADD PRIMARY KEY (`pelicula_id`),
-  ADD KEY `restriccion_id` (`restriccion_id`),
-  ADD KEY `genero_id` (`genero_id`);
+  ADD KEY `genero_id` (`genero_id`),
+  ADD KEY `restriccion_id` (`restriccion_id`);
 
 --
 -- Indices de la tabla `restricciones`
@@ -326,14 +395,6 @@ ALTER TABLE `restricciones`
 --
 ALTER TABLE `salas`
   ADD PRIMARY KEY (`sala_id`);
-
---
--- Indices de la tabla `ventas`
---
-ALTER TABLE `ventas`
-  ADD PRIMARY KEY (`venta_id`),
-  ADD KEY `funcion_id` (`funcion_id`),
-  ADD KEY `cliente_id` (`cliente_id`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -391,7 +452,7 @@ ALTER TABLE `metodos_de_pago`
 -- AUTO_INCREMENT de la tabla `peliculas`
 --
 ALTER TABLE `peliculas`
-  MODIFY `pelicula_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `pelicula_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `restricciones`
@@ -406,12 +467,6 @@ ALTER TABLE `salas`
   MODIFY `sala_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `ventas`
---
-ALTER TABLE `ventas`
-  MODIFY `venta_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- Restricciones para tablas volcadas
 --
 
@@ -419,16 +474,15 @@ ALTER TABLE `ventas`
 -- Filtros para la tabla `asientos`
 --
 ALTER TABLE `asientos`
-  ADD CONSTRAINT `asientos_ibfk_1` FOREIGN KEY (`sala_id`) REFERENCES `salas` (`sala_id`);
+  ADD CONSTRAINT `asientos_ibfk_1` FOREIGN KEY (`funcion_id`) REFERENCES `funciones` (`funcion_id`);
 
 --
 -- Filtros para la tabla `entradas`
 --
 ALTER TABLE `entradas`
   ADD CONSTRAINT `entradas_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`cliente_id`),
-  ADD CONSTRAINT `entradas_ibfk_2` FOREIGN KEY (`funcion_id`) REFERENCES `funciones` (`funcion_id`),
-  ADD CONSTRAINT `entradas_ibfk_3` FOREIGN KEY (`asiento_id`) REFERENCES `asientos` (`asiento_id`),
-  ADD CONSTRAINT `entradas_ibfk_4` FOREIGN KEY (`metodo_pago_id`) REFERENCES `metodos_de_pago` (`metodo_pago_id`);
+  ADD CONSTRAINT `entradas_ibfk_2` FOREIGN KEY (`asiento_id`) REFERENCES `asientos` (`asiento_id`),
+  ADD CONSTRAINT `entradas_ibfk_3` FOREIGN KEY (`metodo_pago_id`) REFERENCES `metodos_de_pago` (`metodo_pago_id`);
 
 --
 -- Filtros para la tabla `funciones`
@@ -443,15 +497,8 @@ ALTER TABLE `funciones`
 -- Filtros para la tabla `peliculas`
 --
 ALTER TABLE `peliculas`
-  ADD CONSTRAINT `genero_id` FOREIGN KEY (`genero_id`) REFERENCES `generos` (`genero_id`),
-  ADD CONSTRAINT `restriccion_id` FOREIGN KEY (`restriccion_id`) REFERENCES `restricciones` (`restriccion_id`);
-
---
--- Filtros para la tabla `ventas`
---
-ALTER TABLE `ventas`
-  ADD CONSTRAINT `ventas_ibfk_1` FOREIGN KEY (`funcion_id`) REFERENCES `funciones` (`funcion_id`),
-  ADD CONSTRAINT `ventas_ibfk_2` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`cliente_id`);
+  ADD CONSTRAINT `genero_id` FOREIGN KEY (`genero_id`) REFERENCES `generos` (`genero_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `restriccion_id` FOREIGN KEY (`restriccion_id`) REFERENCES `restricciones` (`restriccion_id`) ON DELETE SET NULL;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
