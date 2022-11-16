@@ -44,7 +44,7 @@ if (isset($_POST["registro"])) {
   }
 }
 if (isset($_COOKIE["username"]))
-  header("Location: index.html");
+  header("Location: index.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
