@@ -28,5 +28,10 @@ ul{
   color: #F5F3F4;
 }
 
-
+.btn-primary{
+  --bs-btn-bg: #BA181B;
+  --bs-btn-border-color: none;
+  --bs-btn-hover-bg: #BA181B;
+  --bs-btn-active-bg: #BA181B;
+}
 

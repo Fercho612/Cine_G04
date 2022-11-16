@@ -24,17 +24,17 @@
     max-height: 404px;
   }
   .card_movie_img{
-    border: #0B090A 3px solid;
+    border: #161A1D 3px solid;
     border-radius: 1em;
   }
   .card_movie_img:hover{
-  box-shadow: 0px 0px 15px 1px #0B090A;
+  box-shadow: 0px 0px 15px 1px #161A1D;
   }
 </style>
 <?php include 'Layout/header.php';?>
   <main class="w-100 py-5 color_black">
     <section id="cartelera" class="container py-5">
-      <h3 class="fs-1 text-center mb-5 fw-semibold">Peliculas en cartelera</h3>
+      <h3 class="fs-1 text-center mb-5 fw-semibold text-light">Peliculas en cartelera</h3>
       <div class="content-fluid row m-0 justify-content-center">
         <?php
           if ($nums_peliculas <= 0){
