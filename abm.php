@@ -99,7 +99,7 @@ if (isset($_POST["accion"]) && $_POST["accion"] == "agregar_pelicula") {
   $sql = "INSERT INTO peliculas (nombre, duracion, director, restriccion_id, genero_id) 
   VALUES ('" . $_POST["titulo"] . "', '" . $_POST["duracion"] . "', '" . $_POST["director"] . "', '" . $_POST["restriccion"] . "', '" . $_POST["genero"] . "')";
   $conn->query($sql);
-  $target_dir = "fotos_peliculas/" . $conn->insert_id . ".jpg";
+  $target_dir = "fotos_peliculas\\" . $conn->insert_id . ".jpg";
   move_uploaded_file($_FILES["imagen"]["tmp_name"], $target_dir);
   $pelicula = $conn->insert_id;
   $section = "#section-peliculas";
