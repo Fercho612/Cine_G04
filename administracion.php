@@ -333,10 +333,11 @@ if (isset($_COOKIE["username"]) && isset($_COOKIE["contrasena"])) {
             <th> Formato </th>
             <th> Hora </th>
             <th> Precio </th>
+            <th> Disponible </th>
             <th> </th>
           </tr>
           <?php
-          $sql = "SELECT funcion_id, sala, idioma, formato, hora, precio
+          $sql = "SELECT funcion_id, sala, idioma, formato, hora, precio, disponible
 FROM funciones
 LEFT JOIN salas USING (sala_id)
 LEFT JOIN idiomas USING (idioma_id)
@@ -352,11 +353,23 @@ WHERE pelicula_id = " . $_GET["pelicula"];
               echo "  <td>" . $row["formato"] . "</td>";
               echo "  <td>" . $row["hora"] . "</td>";
               echo "  <td>" . $row["precio"] . "</td>";
-              echo "  <td><button class='btn btn-danger' onclick='eliminarFuncion(". $row["funcion_id"]. ")' type='button'> Eliminar </button>";
+              echo "  <td><input class='form-check-input' type='checkbox' value='1' id='disponible-" . $row["funcion_id"] . "' onclick='toggleDisponibilidad(".$row["funcion_id"].");'";
+              if ($row["disponible"] == 1)
+                echo " checked>";
+              else
+                echo " >";
+              echo "</td>";
+              echo "  <td><button class='btn btn-danger' onclick='eliminarFuncion(" . $row["funcion_id"] . ")' type='button'> Eliminar </button>";
               echo "</tr>";
             }
           }
-          ?>          
+          ?>
+          <form method="post" action="abm.php" id="form-disponible">
+            <input type="hidden" name="funcion_id" id="disponible_funcion_id" value="0">
+            <input type="hidden" name="accion" value="toggle_funcion">
+            <input type="hidden" name="pelicula" value="<?php echo $_GET["pelicula"]?>">
+            <input type="hidden" name="activar" value="0" id="disponibilidad">
+          </form>
         </table>
         <h5>Agregar función</h5>
         <form id="form-funciones" method="post" action="abm.php">
