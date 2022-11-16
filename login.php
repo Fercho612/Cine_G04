@@ -59,7 +59,6 @@ if (isset($_COOKIE["username"]))
     integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="login.css">
   <script src="login.js"></script>
   <?php
   if (isset($_POST["registro"]) && $_POST["registro"] == 0)
@@ -68,24 +67,44 @@ if (isset($_COOKIE["username"]))
     echo "<script>var registrando = true;</script>";
   ?>
 </head>
-
+<style>
+  #ventana_login{
+    position: relative;
+    margin: 1em;
+    padding: 1em;
+    color: black;
+}
+main{
+  min-height: 85vh;
+}
+.btn-group, .btn-group-vertical{
+    width: calc(100% - 2em);
+}
+.btn-red{
+  border: none;
+  color: #F5F3F4;
+}
+.btn-red:hover, .btn-red:active{
+  background-color: #660708 !important;
+}
+</style>
 <body>
   <?php include 'Layout/header.php'; ?>
   <main class="w-100 py-5 color-black d-flex justify-content-center">
-    <form method="post" action="login.php" id="ventana_login"
-      class="container rounded shadow d-flex flex-column col-12 col-sm-10 col-md-6 col-lg-5">
+    <form method="post" action="login.php" id="ventana_login" 
+      class="container rounded shadow d-flex flex-column col-12 col-sm-10 col-md-6 col-lg-5 bg-black">
       <br>
       <div id="form_botones" class="d-flex justify-content-center">
         <div class="btn-group justify-content-center" id="grupo_botones">
-          <button type="button" id="btn_tab_registrar" onclick="tab_registrar()" class="btn btn-primary"> Registrarse
+          <button type="button" id="btn_tab_registrar" onclick="tab_registrar()" class="btn btn-red bg-red"> Registrarse
           </button>
           <button type="button" id="btn_tab_iniciar_sesion" onclick="tab_iniciar_sesion()"
-            class="btn btn-outline-primary"> Iniciar Sesión </button>
+            class="btn btn-red bg-red"> Iniciar Sesión </button>
         </div>
       </div>
       <br>
-      <label for="username" id="nombre_label" class="form-label"> Nombre de usuario </label>
-      <input type="text" placeholder="Nombre de usuario" name="username" id="username" class="form-control" required
+      <label for="username" id="nombre_label" class="form-label mt-3"> Nombre de usuario </label>
+      <input type="text" placeholder="Nombre de usuario" name="username" id="username" class="form-control mb-3" required
         data-bs-toggle="tooltip" data-bs-title="Debe contener entre 4 y 40 caracteres" data-bs-placement="right">
       <br>
       <div id="alerta_username" class="alerta">
@@ -99,15 +118,15 @@ if (isset($_COOKIE["username"]))
         ?>
       </div>
       <label for="nombre" id="nombre_label" class="form-label registro"> Nombre </label>
-      <input type="text" placeholder="Nombre" name="nombre" id="nombre" class="form-control registro">
+      <input type="text" placeholder="Nombre" name="nombre" id="nombre" class="form-control registro mb-3">
       <br class="registro">
       <div id="alerta_nombre" class="alerta"> </div>
       <label for="apellido" id="apellido_label" class="form-label registro"> Apellido </label>
-      <input type="text" placeholder="Apellido" name="apellido" id="apellido" class="form-control registro">
+      <input type="text" placeholder="Apellido" name="apellido" id="apellido" class="form-control registro mb-3">
       <br class="registro">
       <div id="alerta_apellido" class="alerta"> </div>
       <label for="contrasena" id="contrasena_label" class="form-label"> Contraseña </label>
-      <input type="password" placeholder="Contraseña" name="contrasena" id="contrasena" class="form-control" required
+      <input type="password" placeholder="Contraseña" name="contrasena" id="contrasena" class="form-control mb-3" required
         data-bs-toggle="tooltip" data-bs-title="Debe contener al menos 4 caracteres" data-bs-placement="right">
       <br>
       <div id="alerta_contrasena" class="alerta">
@@ -118,18 +137,18 @@ if (isset($_COOKIE["username"]))
         ?>
       </div>
       <label for="contraseña2" id="contrasena2_label" class="form-label registro"> Repetir Contraseña </label>
-      <input type="password" placeholder="Contraseña" name="contrasena2" id="contrasena2" class="form-control registro"
+      <input type="password" placeholder="Contraseña" name="contrasena2" id="contrasena2" class="form-control registro mb-3"
         required data-bs-toggle="tooltip" data-bs-title="Las contraseñas deben coincidir" data-bs-placement="right">
       <br class="registro">
       <div id="alerta_contrasena2" class="alerta registro"> </div>
       <label for="correo" id="correo_label" class="form-label registro"> Correo Electrónico </label>
-      <input type="email" placeholder="nombre@ejemplo.com" name="correo" id="correo" class="form-control registro"
+      <input type="email" placeholder="nombre@ejemplo.com" name="correo" id="correo" class="form-control registro mb-3"
         required>
       <br>
       <div id="alerta_correo" class="alerta registro"> </div>
-      <button type="button" class="btn btn-primary w-100 d-none" id="btn_iniciar_sesion" onclick="iniciar_sesion()">
+      <button type="button" class="btn bg-red w-100 d-none" id="btn_iniciar_sesion" onclick="iniciar_sesion()">
         Iniciar Sesion </button>
-      <button type="button" class="btn btn-primary w-100 d-block" id="btn_registrar" onclick="registrar()"> Registrarse
+      <button type="button" class="btn bg-red w-100 d-block " id="btn_registrar" onclick="registrar()"> Registrarse
       </button>
 
       <input id="hidden_registro" type="hidden" name="registro" value="1">
