@@ -55,7 +55,7 @@ if (isset($_COOKIE["username"]) && isset($_COOKIE["contrasena"])) {
           while ($row = $res->fetch_assoc()) {
             echo "<tr>";
             echo "  <th>" . $row["pelicula_id"] . "</th>";
-            echo "  <td>" . $row["nombre"] . "</td>";
+            echo "  <td><a href='administracion.php?pelicula=" . $row["pelicula_id"] . "'>" . $row["nombre"] . "</a></td>";
             echo "  <td>" . $row["director"] . "</td>";
             echo "  <td>" . $row["duracion"] . "</td>";
             echo "  <td><img src='" . $row["ruta_imagen"] . "'></td>";
@@ -66,6 +66,9 @@ if (isset($_COOKIE["username"]) && isset($_COOKIE["contrasena"])) {
         }
           ?>
         </table>
+
+        <a href="administracion.php?pelicula=0" class="btn btn-primary"> Agregar Película </a>
+        <br>
       </section>
       <section>
         <h4> Restricciones </h4>
@@ -108,7 +111,7 @@ if (isset($_COOKIE["username"]) && isset($_COOKIE["contrasena"])) {
           </div>
         </form>
       </section>
-      <br> 
+      <br>
       <section>
         <h4> Géneros </h4>
         <form id="form-generos" action="abm.php" method="post">
@@ -151,8 +154,83 @@ if (isset($_COOKIE["username"]) && isset($_COOKIE["contrasena"])) {
         </form>
       </section>
       <?php } else { ?>
+      <!-- Agregar Película-->
       <section>
-        <h4> Agregar Pelicula </h4>
+        <?php
+        if ($_GET["pelicula"] == 0) {
+          echo "<h4> Agregar Pelicula </h4>";
+        } else {
+          $info_pelicula = $conn->query("SELECT * FROM peliculas WHERE pelicula_id = " . $_GET["pelicula"])->fetch_assoc();
+          echo "<h4> Editar Pelicula </h4>";
+        }
+        ?>
+        <form id="form-pelicula" method="post" action="abm.php" enctype="multipart/form-data">
+          <label for="titulo" class="form-label"> Título de la película: </label>
+          <input type="text" name="titulo" class="form-control" placeholder="Título" required <?php if
+            (isset($info_pelicula)) echo "value='" . $info_pelicula["nombre"] . "'"; ?>>
+          <label for="director" class="form-label"> Director de la película: </label>
+          <input type="text" name="director" class="form-control" placeholder="Director" required <?php if
+            (isset($info_pelicula)) echo "value='" . $info_pelicula["director"] . "'"; ?>>
+          <br>
+          <div class="row">
+            <div class="col-6 col-md-3">
+              <label for="duracion" class="form-label"> Duración (en minutos): </label>
+              <input type="number" name="duracion" class="form-control" placeholder="Duración" max="999" min="1"
+                required <?php if (isset($info_pelicula)) echo "value='" . $info_pelicula["duracion"] . "'" ?>>
+            </div>
+            <div class="col-6 col-md-3">
+              <label for="restriccion" class="form-label"> Restriccion: </label>
+              <select name="restriccion" id="restriccion" class="form-select">
+                <?php
+        $res = $conn->query("SELECT restriccion_id, restriccion FROM restricciones;");
+        if ($res->num_rows > 0) {
+          while ($row = $res->fetch_assoc()) {
+            echo "<option value='" . $row["restriccion_id"];
+            if (isset($info_pelicula))
+              echo "' selected>";
+            else
+              echo "'>";
+            echo $row["restriccion"];
+            echo "</option>";
+          }
+        }
+                ?>
+              </select>
+            </div>
+            <div class="col-6 col-md-3">
+              <label for="genero" class="form-label"> Género: </label>
+              <select name="genero" id="genero" class="form-select">
+                <?php
+        $res = $conn->query("SELECT genero_id, genero FROM generos;");
+        if ($res->num_rows > 0) {
+          while ($row = $res->fetch_assoc()) {
+            echo "<option value='" . $row["genero_id"];
+            if (isset($info_pelicula))
+              echo "' selected>";
+            else
+              echo "'>";
+            echo $row["genero"];
+            echo "</option>";
+          }
+        }
+                ?>
+              </select>
+            </div>
+            <div class="col-6 col-md-3">
+              <label for="imagen" class="form-label"> Imagen: </label>
+              <input type="file" name="imagen" class="form-control">
+            </div>
+          </div>
+          <br>
+          <?php if ($_GET["pelicula"] == 0) { ?>
+          <button type="submit" name="accion" value="agregar_pelicula" class="btn btn-primary"> Añadir </button>
+          <?php } else { ?>
+          <button type="submit" class="btn btn-primary"> Guardar </button>
+          <button type="submit" class="btn btn-danger" onclick="eliminarPelicula()"> Eliminar </button>
+          <input type="hidden" name="accion" value="editar_pelicula" id="accion_pelicula">
+          <input type="hidden" name="id" value="<?php echo $_GET["pelicula"]; ?>">
+          <?php } ?>
+        </form>
       </section>
       <?php } ?>
     </div>

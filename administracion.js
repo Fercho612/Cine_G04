@@ -25,3 +25,10 @@ function eliminarRestriccion(id) {
     $("#form-restricciones").submit();
   }
 }
+
+function eliminarPelicula() {
+  if (confirm(`¿Desea eliminar esta pelicula? Se eliminarán todas las funciones asociadas`)) {
+    $("#accion_pelicula").val("eliminar_pelicula");
+    $("#form-pelicula").submit();
+  }
+}
