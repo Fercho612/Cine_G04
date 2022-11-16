@@ -74,3 +74,11 @@ function eliminarFuncion(id){
     $("#form-funciones").submit();
   }
 }
+
+function toggleDisponibilidad(id){
+  let disponibilidad = $(`#disponible-${id}`)[0].checked;
+  $("#disponible_funcion_id").val(id);
+  if(disponibilidad) $("#disponibilidad").val(1);
+  else $("#disponibilidad").val(0);
+  $("#form-disponible").submit();
+}

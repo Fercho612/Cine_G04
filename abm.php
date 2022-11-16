@@ -116,6 +116,15 @@ if (isset($_POST["accion"]) && $_POST["accion"] == "eliminar_funcion") {
   $conn->query("DELETE FROM funciones WHERE funcion_id = " . $_POST["funcion_id"]);
   $section = "#section-funciones";
 }
+if (isset($_POST["accion"]) && $_POST["accion"] == "toggle_funcion") {
+  if(isset($_POST["activar"]) && $_POST["activar"] == 1) $activar = 1;
+  else $activar = 0;
+  //die("Valor de funcion_id:" . $_POST["funcion_id"]);
+  $conn->query("UPDATE funciones SET disponible = ". $activar ." WHERE funcion_id = " . $_POST["funcion_id"]);
+  $section = "#section-funciones";
+}
+
+
 if (isset($pelicula)) {
   header("Location: administracion.php?pelicula=" . $pelicula . $section);
 } else {
