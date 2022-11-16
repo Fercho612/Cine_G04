@@ -68,70 +68,41 @@ if (isset($_COOKIE["username"]))
   ?>
 </head>
 <style>
-  .btn-primary {
-    --bs-btn-color: #fff;
-    --bs-btn-bg: #0d6efd;
-    --bs-btn-border-color: #0d6efd;
-    --bs-btn-hover-color: #fff;
-    --bs-btn-hover-bg: #0b5ed7;
-    --bs-btn-hover-border-color: #0a58ca;
-    --bs-btn-focus-shadow-rgb: 49, 132, 253;
-    --bs-btn-active-color: #fff;
-    --bs-btn-active-bg: #0a58ca;
-    --bs-btn-active-border-color: #0a53be;
-    --bs-btn-active-shadow: inset 0 3px 5pxrgba(0, 0, 0, 0.125);
-    --bs-btn-disabled-color: #fff;
-    --bs-btn-disabled-bg: #0d6efd;
-    --bs-btn-disabled-border-color: #0d6efd;
-  }
-
-  #ventana_login {
+  #ventana_login{
     position: relative;
-    background-color: white;
     margin: 1em;
     padding: 1em;
     color: black;
-  }
-
-  main {
-    min-height: 85vh;
-  }
-
-  .btn-group,
-  .btn-group-vertical {
+}
+main{
+  min-height: 85vh;
+}
+.btn-group, .btn-group-vertical{
     width: calc(100% - 2em);
-  }
+}
 
-  .btn-red {
-    border: none;
-    color: #F5F3F4;
-  }
-
-  .btn-red:hover,
-  .btn-red:active {
-    background-color: #660708 !important;
-  }
+.btn-red:hover, .btn-red:active{
+  background-color: #660708 !important;
+}
 </style>
-
 <body>
   <?php include 'Layout/header.php'; ?>
   <main class="w-100 py-5 color-black d-flex justify-content-center">
-    <form method="post" action="login.php" id="ventana_login"
-      class="container rounded shadow d-flex flex-column col-12 col-sm-10 col-md-6 col-lg-5">
+    <form method="post" action="login.php" id="ventana_login" 
+      class="container rounded shadow d-flex flex-column col-12 col-sm-10 col-md-6 col-lg-5 bg-black">
       <br>
       <div id="form_botones" class="d-flex justify-content-center">
         <div class="btn-group justify-content-center" id="grupo_botones">
-          <button type="button" id="btn_tab_registrar" onclick="tab_registrar()" class="btn btn-red bg-red"> Registrarse
+          <button type="button" id="btn_tab_registrar" onclick="tab_registrar()" class="btn btn-primary"> Registrarse
           </button>
-          <button type="button" id="btn_tab_iniciar_sesion" onclick="tab_iniciar_sesion()" class="btn btn-red bg-red">
-            Iniciar Sesión </button>
+          <button type="button" id="btn_tab_iniciar_sesion" onclick="tab_iniciar_sesion()"
+            class="btn btn-primary"> Iniciar Sesión </button>
         </div>
       </div>
       <br>
-      <label for="username" id="nombre_label" class="form-label mt-3"> Nombre de usuario </label>
-      <input type="text" placeholder="Nombre de usuario" name="username" id="username" class="form-control mb-3"
-        required data-bs-toggle="tooltip" data-bs-title="Debe contener entre 4 y 40 caracteres"
-        data-bs-placement="right">
+      <label for="username" id="nombre_label" class="form-label mt-3 text-light"> Nombre de usuario </label>
+      <input type="text" placeholder="Nombre de usuario" name="username" id="username" class="form-control mb-3" required
+        data-bs-toggle="tooltip" data-bs-title="Debe contener entre 4 y 40 caracteres" data-bs-placement="right">
       <br>
       <div id="alerta_username" class="alerta">
         <?php
@@ -143,17 +114,17 @@ if (isset($_COOKIE["username"]))
         }
         ?>
       </div>
-      <label for="nombre" id="nombre_label" class="form-label registro"> Nombre </label>
+      <label for="nombre" id="nombre_label" class="form-label registro text-light"> Nombre </label>
       <input type="text" placeholder="Nombre" name="nombre" id="nombre" class="form-control registro mb-3">
       <br class="registro">
       <div id="alerta_nombre" class="alerta"> </div>
-      <label for="apellido" id="apellido_label" class="form-label registro"> Apellido </label>
+      <label for="apellido" id="apellido_label" class="form-label registro text-light"> Apellido </label>
       <input type="text" placeholder="Apellido" name="apellido" id="apellido" class="form-control registro mb-3">
       <br class="registro">
       <div id="alerta_apellido" class="alerta"> </div>
-      <label for="contrasena" id="contrasena_label" class="form-label"> Contraseña </label>
-      <input type="password" placeholder="Contraseña" name="contrasena" id="contrasena" class="form-control mb-3"
-        required data-bs-toggle="tooltip" data-bs-title="Debe contener al menos 4 caracteres" data-bs-placement="right">
+      <label for="contrasena" id="contrasena_label" class="form-label text-light"> Contraseña </label>
+      <input type="password" placeholder="Contraseña" name="contrasena" id="contrasena" class="form-control mb-3" required
+        data-bs-toggle="tooltip" data-bs-title="Debe contener al menos 4 caracteres" data-bs-placement="right">
       <br>
       <div id="alerta_contrasena" class="alerta">
         <?php
@@ -162,20 +133,19 @@ if (isset($_COOKIE["username"]))
         }
         ?>
       </div>
-      <label for="contraseña2" id="contrasena2_label" class="form-label registro"> Repetir Contraseña </label>
-      <input type="password" placeholder="Contraseña" name="contrasena2" id="contrasena2"
-        class="form-control registro mb-3" required data-bs-toggle="tooltip"
-        data-bs-title="Las contraseñas deben coincidir" data-bs-placement="right">
+      <label for="contraseña2" id="contrasena2_label" class="form-label registro text-light"> Repetir Contraseña </label>
+      <input type="password" placeholder="Contraseña" name="contrasena2" id="contrasena2" class="form-control registro mb-3"
+        required data-bs-toggle="tooltip" data-bs-title="Las contraseñas deben coincidir" data-bs-placement="right">
       <br class="registro">
       <div id="alerta_contrasena2" class="alerta registro"> </div>
-      <label for="correo" id="correo_label" class="form-label registro"> Correo Electrónico </label>
+      <label for="correo" id="correo_label" class="form-label registro text-light"> Correo Electrónico </label>
       <input type="email" placeholder="nombre@ejemplo.com" name="correo" id="correo" class="form-control registro mb-3"
         required>
       <br>
       <div id="alerta_correo" class="alerta registro"> </div>
-      <button type="button" class="btn bg-red w-100 d-none" id="btn_iniciar_sesion" onclick="iniciar_sesion()">
+      <button type="button" class="btn btn-primary w-100 d-none" id="btn_iniciar_sesion" onclick="iniciar_sesion()">
         Iniciar Sesion </button>
-      <button type="button" class="btn bg-red w-100 d-block " id="btn_registrar" onclick="registrar()"> Registrarse
+      <button type="button" class="btn btn-primary w-100 d-block " id="btn_registrar" onclick="registrar()"> Registrarse
       </button>
 
       <input id="hidden_registro" type="hidden" name="registro" value="1">
