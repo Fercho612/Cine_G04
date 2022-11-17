@@ -1,6 +1,5 @@
 function seat_active(row,column){
   seat_id = '`' + row +'`,' + column.toString();
-  console.log(seat_id);
   seat_activ = `<img class="seat_active" src='Multimedia/Sillas/seat-activate.png' alt='asiento' 
   onclick='rm_seat_active(`+ seat_id +`)'>`;
   $("[value='"+row+column+"'] img").remove();
@@ -38,7 +37,6 @@ function save_seats(){
       }
     }   
   }
-  console.log(seats_select);
   var strginSeat = seats_select.join(',');
   $("#arr").val(strginSeat);
 }

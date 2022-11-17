@@ -121,4 +121,25 @@ if (isset($pelicula)) {
 } else {
   header("Location: administracion.php" . $section);
 }
+
+// ABM de entradas
+if(isset($_POST['buy_ticket'])){
+  $idioma = $_POST['entradas_idioma'];
+  $formato = $_POST['entradas_formato'];
+  $horario = $_POST['entradas_horario'];
+  $asientos = $_POST['entradas_asientos'];
+  $metodo = $_POST['entradas_mpago'];
+
+  $arrAsientos = (explode(",",$asientos));
+
+  $query_funciones = "SELECT funcion_id FROM funciones inner join idiomas USING(idioma_id) inner join formatos USING(formato_id)  WHERE idioma = '$idioma' and formato = '$formato' and HOUR(`hora`)='$horario'";
+  $get_funcion_id = mysqli_query($conn,$query_entradas);
+
+  for ($i=0;$i<count($arrAsientos);$i++){
+    $sql = "INSERT INTO entradas (client_id, metodo_pago_id, funcion_id, codigo_asiento) 
+    VALUES(40," .$metodo. "," .$arrAsientos[$i].",".$get_funcion_id.");";
+    $conn->query($sql);
+  }
+}   
 ?>
+

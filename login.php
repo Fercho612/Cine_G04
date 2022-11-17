@@ -7,7 +7,7 @@ if (isset($_POST["registro"])) {
   $username = "cine";
   $password = "0000";
   $database = "cine";
-  $conn = new mysqli($server, $username, $password, $database);
+  $conn = new mysqli($server, "root", "", $database);
   if ($conn->connect_error) {
     die("Conexión Fallida: " . $conn->connect_error);
   }

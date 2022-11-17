@@ -44,7 +44,7 @@
         ?>
         <div class="card_movie col-12 col-sm-6 col-lg-3 mb-3">
           <a href="pedidos.php?pelicula=<?=$rows_peliculas['pelicula_id']?>">
-            <img src='fotos_peliculas/<?php echo $rows_peliculas["pelicula_id"]?>.jpg' alt="Black_Adam" class="w-100 h-100 img-responsive card_movie_img">
+            <img src='Multimedia/Peliculas/<?=$rows_peliculas["ruta_imagen"]?>' alt="Black_Adam" class="w-100 h-100 img-responsive card_movie_img">
           </a>
         </div>
       <?php 

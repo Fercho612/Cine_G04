@@ -5,9 +5,12 @@
   $get_peliculas = mysqli_query($connexion,$query_pelicula);
   $rows_peliculas = mysqli_fetch_array($get_peliculas);
 
-  $query_funciones = "SELECT * FROM entradas inner join funciones USING(funcion_id) WHERE entrada_id=1";
-  $get_funciones = mysqli_query($connexion,$query_funciones);
-  $row_funciones = mysqli_fetch_array($get_funciones);
+  $query_entradas = "SELECT * FROM entradas inner join funciones USING(funcion_id) WHERE entrada_id=1";
+  $get_entradas = mysqli_query($connexion,$query_entradas);
+  $row_entradas = mysqli_fetch_array($get_entradas);
+
+  $query_funciones = "SELECT funcion_id,precio FROM funciones inner join idiomas USING(idioma_id) inner join formatos USING(formato_id) WHERE idioma = 'Inglés' and formato = '2D'";
+  $get_funcion_id = mysqli_query($connexion,$query_entradas);
 ?>
 
 <!DOCTYPE html>
@@ -24,6 +27,7 @@
 </head>
 <body>
 <?php include 'Layout/header.php';?>
+
 <style> 
   .modal{
     --bs-modal-width: 50vw;
@@ -61,21 +65,29 @@
   <div class="container-lg p-3 row mx-auto flex-wrap-reverse flex-md-nowrap">
     <div class="col-12 col-md-9 mt-3 p-0 d-flex flex-column">
           <span class="fs-2 text-center d-block color_wt">Comprar entradas</span>
-          <form action="">
+          <form action="abm.php" method="POST">
             <div class="my-3">
-              <label for="funcion_formato" class="fs-4 me-3 color_wt">Selecciona formato: </label>
-              <select name="formato" id="funcion_formato" class="text-center p-1">
+              <label for="entradas_formato" class="fs-4 me-3 color_wt">Selecciona formato: </label>
+              <select name="entradas_formato" id="entradas_formato" class="text-center p-1">
                 <option value="2">2D</option>
                 <option value="1">3D</option>
                 <option value="3">4DX</option>
               </select>
             </div>
             <div class="my-3">
-              <label for="funcion_horario" class="fs-4 me-3 color_wt">Selecciona un horario: </label>
-              <select name="" id="funcion_horario" class="text-center p-1">
-                <option value="">19:30</option>
-                <option value="">19:30</option>
-                <option value="">19:30</option>
+              <label for="entradas_horario" class="fs-4 me-3 color_wt">Selecciona un horario: </label>
+              <select name="entradas_horario" id="entradas_horario" class="text-center p-1">
+                <option value="14:30:00">14:30</option>
+                <option value="17:30:00">17:00</option>
+                <option value="19:30:00">19:30</option>
+              </select>
+            </div>
+            <div class="my-3">
+              <label for="entradas_idioma" class="fs-4 me-3 color_wt">Selecciona idioma: </label>
+              <select name="entradas_idioma" id="entradas_idioma" class="text-center p-1">
+                <option value="1">Español</option>
+                <option value="2">Ingles</option>
+                <option value="3">Subtitulos al Español</option>
               </select>
             </div>
             <div class="my-3">
@@ -111,11 +123,10 @@
                                     echo "<div style='width: 60px;'></div>"; 
                                   }
                                   $asiento = $row . strval($j);
-                                  if($row_funciones['codigo_asiento'] == $asiento){
-                                    echo "<div class='d-inline' value='$row$j'><img src='Multimedia/Sillas/seat-occupied.png' alt='asiento' value='$row$j'></div>";
+                                  if($row_entradas['codigo_asiento'] == $asiento){
+                                    echo "<div class='d-inline-flex flex-column text-center' value='$row$j'><img src='Multimedia/Sillas/seat-occupied.png' alt='asiento' value='$row$j'><span>$row$j</span></div>";
                                   }else{
-                                    echo "<div class='d-inline' value='$row$j'><img src='Multimedia/Sillas/seat-free.png' alt='asiento' 
-                                    onclick='seat_active(`$row`,$j)'></div>";
+                                    echo "<div class='text-center'> <div value='$row$j'><img src='Multimedia/Sillas/seat-free.png' alt='asiento' onclick='seat_active(`$row`,$j)'></div><span>$row$j</span> </div>";
                                   } 
                                 } 
                               echo "<div style='width: 120px;'></div>"; 
@@ -127,11 +138,10 @@
                                 if($j==3 or $j==8){
                                   echo "<div style='width: 120px;'></div>"; 
                                 }
-                                if($row_funciones['codigo_asiento'] == $asiento){
-                                  echo "<div class='d-inline' value='$row$j'><img src='Multimedia/Sillas/seat-occupied.png' alt='asiento' value='$row$j'></div>";
+                                if($row_entradas['codigo_asiento'] == $asiento){
+                                  echo "<div class='d-inline-flex flex-column' value='$row$j'><img src='Multimedia/Sillas/seat-occupied.png' alt='asiento' value='$row$j'><span>'$row$j'</span></div>";
                                 }else{
-                                  echo "<div class='d-inline' value='$row$j'><img src='Multimedia/Sillas/seat-free.png' alt='asiento' 
-                                  onclick='seat_active(`$row`,$j)'></div>";
+                                  echo "<div class='text-center'> <div value='$row$j'><img src='Multimedia/Sillas/seat-free.png' alt='asiento' onclick='seat_active(`$row`,$j)'></div><span>$row$j</span> </div>";
                                 }
                               }
                               echo "<div style='width: 60px;'></div>"; 
@@ -139,11 +149,10 @@
                             if($i>11){
                               for($j=1;$j<=15;$j++){
                                 $asiento = $row . strval($j);
-                                if($row_funciones['codigo_asiento'] == $asiento){
-                                  echo "<div class='d-inline' value='$row$j'><img src='Multimedia/Sillas/seat-occupied.png' alt='asiento' value='$row$j'></div>";
+                                if($row_entradas['codigo_asiento'] == $asiento){
+                                  echo "<div class='d-inline-flex flex-column' value='$row$j'><img src='Multimedia/Sillas/seat-occupied.png' alt='asiento' value='$row$j'><span>'$row$j'</span></div>";
                                 }else{
-                                  echo "<div class='d-inline' value='$row$j'><img src='Multimedia/Sillas/seat-free.png' alt='asiento' 
-                                  onclick='seat_active(`$row`,$j)'></div>";
+                                  echo "<div class='text-center'> <div value='$row$j'><img src='Multimedia/Sillas/seat-free.png' alt='asiento' onclick='seat_active(`$row`,$j)'></div><span>$row$j</span> </div>";
                                 }
                               }
                             }
@@ -159,18 +168,18 @@
                   </div>
                 </div> 
               </div>
-              <input type="hidden" name="arr" id="arr">
+              <input type="hidden" name="entradas_asientos" id="arr">
             </div>
             <div class="my-3">
-              <label for="funcion_mpago" class="fs-4 me-3 color_wt">Forma de pago: </label>
-              <select name="funcion_mpago" id="funcion_mpago" class="text-center p-1">
+              <label for="entradas_mpago" class="fs-4 me-3 color_wt">Forma de pago: </label>
+              <select name="entradas_mpago" id="entradas_mpago" class="text-center p-1">
                 <option value="1">Débito</option>
                 <option value="2">Crédito</option>
                 <option value="3">Efectivo</option>
               </select>
             </div>             
             <div class="d-flex justify-content-center my-5">
-              <button type="submit" class="btn btn-dark mx-auto p-3">Comprar entradas</button>
+              <button type="submit" class="btn btn-dark mx-auto p-3" name="buy_ticket">Comprar entradas</button>
             </div>
           </form>
     </div>
